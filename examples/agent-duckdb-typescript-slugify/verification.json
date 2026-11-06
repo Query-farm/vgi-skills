@@ -136,10 +136,59 @@
       "columns": [
         "count(demo.main.slugify(v))"
       ]
+    },
+    {
+      "name": "quickstart result",
+      "sql": "SELECT demo.main.slugify('Hello, VGI!') AS slug",
+      "status": "passed",
+      "rows": [
+        [
+          "hello-vgi"
+        ]
+      ],
+      "columns": [
+        "slug"
+      ]
+    },
+    {
+      "name": "10000 input rows",
+      "sql": "SELECT count(*) AS verified_rows\nFROM range(10000)\nWHERE demo.main.slugify('Hello, VGI! ' || range::VARCHAR)\n    = 'hello-vgi-' || range::VARCHAR",
+      "status": "passed",
+      "rows": [
+        [
+          10000
+        ]
+      ],
+      "columns": [
+        "verified_rows"
+      ]
+    },
+    {
+      "name": "article CSV",
+      "sql": "SELECT title, demo.main.slugify(title) AS slug\nFROM read_csv('articles.csv')\nORDER BY id",
+      "status": "passed",
+      "rows": [
+        [
+          "Hello, VGI!",
+          "hello-vgi"
+        ],
+        [
+          "Caf\u00e9 cr\u00e8me",
+          "cafe-creme"
+        ],
+        [
+          "Version 2.0 (beta)",
+          "version-2-0-beta"
+        ]
+      ],
+      "columns": [
+        "title",
+        "slug"
+      ]
     }
   ],
   "extension_version": "ddc96dc7a9",
   "extension_repository": "query_farm",
   "platform": "osx_arm64",
-  "elapsed_seconds": 1.031
+  "elapsed_seconds": 1.068
 }

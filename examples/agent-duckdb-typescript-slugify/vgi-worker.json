@@ -22,7 +22,7 @@
     },
     {
       "name": "accented Latin transliteration",
-      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, '  --Cr\u00e8me Br\u00fbl\u00e9e--  '), (2, '\u00c5ngstr\u00f6m \u00d8resund Stra\u00dfe'), (3, '\u0141\u00f3d\u017a & Krak\u00f3w'), (4, '\u00c6sir/\u0152uvre__\u00deorn')) t(id, v) ORDER BY id",
+      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, '  --Crème Brûlée--  '), (2, 'Ångström Øresund Straße'), (3, 'Łódź & Kraków'), (4, 'Æsir/Œuvre__Þorn')) t(id, v) ORDER BY id",
       "rows": [
         [
           "creme-brulee"
@@ -85,7 +85,7 @@
     },
     {
       "name": "multiple batches with interleaved NULLs",
-      "sql": "SELECT count(*), count(s), count(DISTINCT s), min(s), max(s) FROM (SELECT demo.main.slugify(CASE WHEN i % 10 = 0 THEN NULL ELSE 'Item #' || i || ' Caf\u00e9' END) AS s FROM range(5000) t(i))",
+      "sql": "SELECT count(*), count(s), count(DISTINCT s), min(s), max(s) FROM (SELECT demo.main.slugify(CASE WHEN i % 10 = 0 THEN NULL ELSE 'Item #' || i || ' Café' END) AS s FROM range(5000) t(i))",
       "rows": [
         [
           5000,
@@ -102,6 +102,42 @@
       "rows": [
         [
           0
+        ]
+      ]
+    },
+    {
+      "name": "quickstart result",
+      "sql": "SELECT demo.main.slugify('Hello, VGI!') AS slug",
+      "rows": [
+        [
+          "hello-vgi"
+        ]
+      ]
+    },
+    {
+      "name": "10000 input rows",
+      "sql": "SELECT count(*) AS verified_rows\nFROM range(10000)\nWHERE demo.main.slugify('Hello, VGI! ' || range::VARCHAR)\n    = 'hello-vgi-' || range::VARCHAR",
+      "rows": [
+        [
+          10000
+        ]
+      ]
+    },
+    {
+      "name": "article CSV",
+      "sql": "SELECT title, demo.main.slugify(title) AS slug\nFROM read_csv('articles.csv')\nORDER BY id",
+      "rows": [
+        [
+          "Hello, VGI!",
+          "hello-vgi"
+        ],
+        [
+          "Café crème",
+          "cafe-creme"
+        ],
+        [
+          "Version 2.0 (beta)",
+          "version-2-0-beta"
         ]
       ]
     }

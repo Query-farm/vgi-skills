@@ -14,3 +14,21 @@ npm run verify:sql
 ```
 
 The verifier uses stock DuckDB 2.0.0 with the signed VGI extension from query_farm. It configures the repository in an isolated temporary directory and leaves `verification.json` with actual engine and extension versions, the ATTACH statement, and SQL assertion results.
+
+## Use the function on a CSV
+
+The maintained `articles.csv` fixture and `articles.sql` query were added after the recorded agent session. The worker source is unchanged. The SQL verifier checks this follow-on example too:
+
+```sql
+SELECT title, demo.main.slugify(title) AS slug
+FROM read_csv('articles.csv')
+ORDER BY id;
+```
+
+| title | slug |
+| --- | --- |
+| Hello, VGI! | hello-vgi |
+| Café crème | cafe-creme |
+| Version 2.0 (beta) | version-2-0-beta |
+
+These are candidate URL slugs; your application still owns uniqueness and routing. This small function makes the agent's work easy to inspect. Use the same worker pattern to expose a function or package your project already maintains.
