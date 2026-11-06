@@ -86,6 +86,8 @@ Stock DuckDB 2.0.0 is the default tested engine, using `INSTALL vgi FROM query_f
 
 ## Examples and compatibility
 
+- [Shipping margins: one function to an actionable SQL report](examples/shipping-margin/) — fictional orders/rates with verified results
+
 - [Python scalar fixture](examples/python-double/)
 - [TypeScript scalar fixture](examples/typescript-double/) — run `npm ci` first
 - [Agent-built TypeScript worker on stock DuckDB](examples/agent-duckdb-typescript-slugify/) — the recorded demo’s source and tests
@@ -112,6 +114,7 @@ To evaluate a skill with an installed, authenticated coding agent:
 ```sh
 python3 scripts/evaluate.py --agent codex --case python-build
 python3 scripts/evaluate.py --agent claude --case typescript-build
+python3 scripts/evaluate.py --agent claude --case shipping-report
 python3 scripts/evaluate.py --agent claude --case typescript-build --without-skill
 ```
 

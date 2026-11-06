@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "recorded_at": "2026-11-06T19:41:38.017961+00:00",
+  "recorded_at": "2026-11-06T21:10:36.808047+00:00",
   "environment": "macOS ARM64; fresh project and agent session; shared dependency caches; some runs concurrent",
   "method": "Native Codex/Claude CLI sessions. Generated workers independently checked through the selected engine (Haybarn 2.0.0rc11 or stock DuckDB 2.0.0 with VGI from query_farm). Language-choice cases check that no worker was generated before the developer selected a language. Repair cases use a seeded wrong-result bug. Packaging cases verify the hash and SQL behavior of an extracted archive.",
   "limitations": "Small exploratory sample, not a reliability or speed guarantee. CLI configured/default models, not a controlled model comparison. Agent duration includes its own tests; independent verification duration is recorded separately. No cold-cache or Windows/Linux native-agent measurements. Other agents have portable installation checks, not live execution evaluations.",
@@ -320,6 +320,24 @@
       "run_id": "20261106T193516Z-codex-python-build-skill",
       "human_interventions": 0,
       "model": "Configured CLI default; not pinned or exposed in the event stream"
+    },
+    {
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "shipping-report",
+      "with_skill": true,
+      "started_at": "20261106T210607Z",
+      "agent_seconds": 167.57,
+      "agent_exit_code": 0,
+      "status": "passed",
+      "cache": "shared package caches; fresh project/session",
+      "harness_version": 2,
+      "engine": "duckdb",
+      "verification_exit_code": 0,
+      "verification_seconds": 1.12,
+      "run_id": "20261106T210607Z-claude-shipping-report-skill",
+      "human_interventions": 0,
+      "model": "claude-opus-5-5"
     }
   ]
 }

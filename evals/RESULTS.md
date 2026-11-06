@@ -30,10 +30,11 @@ Small exploratory sample, not a reliability or speed guarantee. CLI configured/d
 | claude | java-build | haybarn | yes | passed | 136.5s | 1.2s |
 | claude | typescript-build | duckdb | yes | passed | 98.4s | 1.0s |
 | codex | python-build | duckdb | yes | passed | 258.5s | 1.4s |
+| claude | shipping-report | duckdb | yes | passed | 167.6s | 1.1s |
 
 ## Interpretation
 
-The successful build runs return independently checked slugification results, preserve NULL, and handle 10,000 input rows. A small successful sample establishes that the workflow can work today; it does not establish a universal completion rate or a five-minute guarantee.
+The successful build runs return independently checked slugification results, preserve NULL, and handle 10,000 input rows. The shipping-report case separately checks the shipping rule, a five-order report that preserves missing quotes, NULL handling, empty input, and 10,000 rows. A small successful sample establishes that the workflow can work today; it does not establish a universal completion rate or a five-minute guarantee.
 
 Both build skills and no-skill baselines receive the same task and output manifest contract in harness version 2. The first TypeScript baseline used harness version 1, which omitted that private contract; it is retained but excluded from comparisons. Any similarly affected baseline is explicitly marked in the JSON report.
 

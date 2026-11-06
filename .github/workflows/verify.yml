@@ -22,3 +22,5 @@ jobs:
         working-directory: examples/agent-duckdb-typescript-slugify
       - run: uv run --python 3.13 --with haybarn==2.0.0rc11 python skills/vgi-worker/scripts/verify_worker.py --engine haybarn --project examples/python-double
       - run: uv run --python 3.13 --with haybarn==2.0.0rc11 python skills/vgi-worker/scripts/verify_worker.py --engine haybarn --project examples/typescript-double
+      - run: npm ci && npm test && npm run typecheck && npm run verify:sql
+        working-directory: examples/shipping-margin

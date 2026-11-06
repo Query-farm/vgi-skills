@@ -1,0 +1,153 @@
+{
+  "status": "passed",
+  "engine": "duckdb",
+  "engine_version": "2.0.0",
+  "worker": [
+    "node",
+    "--import",
+    "tsx",
+    "worker.ts"
+  ],
+  "attach_sql": "ATTACH 'shipping' AS \"shipping\" (TYPE vgi, LOCATION 'node --import tsx worker.ts');",
+  "checks": [
+    {
+      "name": "one quote",
+      "sql": "SELECT shipping.main.quote_cents('US', 500::BIGINT) AS shipping_cents",
+      "status": "passed",
+      "rows": [
+        [
+          550
+        ]
+      ],
+      "columns": [
+        "shipping_cents"
+      ]
+    },
+    {
+      "name": "sample orders",
+      "sql": "-- Fictional orders; all money values are USD cents.\nCREATE OR REPLACE TEMP TABLE orders (\n  order_id VARCHAR, destination VARCHAR, weight_g BIGINT,\n  revenue_cents BIGINT, product_cost_cents BIGINT\n);\nINSERT INTO orders VALUES\n  ('A-101', 'US',  500, 3500, 1800),\n  ('A-102', 'US', 1800, 2400, 1600),\n  ('A-103', 'CA', 1200, 4000, 2600),\n  ('A-104', 'GB',  700, 6000, 2800),\n  ('A-105', 'AU',  900, 3000, 1400);\nSELECT count(*) FROM orders",
+      "status": "passed",
+      "rows": [
+        [
+          5
+        ]
+      ],
+      "columns": [
+        "count_star()"
+      ]
+    },
+    {
+      "name": "quotes for orders",
+      "sql": "SELECT order_id, destination,\n  shipping.main.quote_cents(\n    destination, weight_g\n  ) AS shipping_cents\nFROM orders\nORDER BY order_id",
+      "status": "passed",
+      "rows": [
+        [
+          "A-101",
+          "US",
+          550
+        ],
+        [
+          "A-102",
+          "US",
+          1000
+        ],
+        [
+          "A-103",
+          "CA",
+          1650
+        ],
+        [
+          "A-104",
+          "GB",
+          1900
+        ],
+        [
+          "A-105",
+          "AU",
+          null
+        ]
+      ],
+      "columns": [
+        "order_id",
+        "destination",
+        "shipping_cents"
+      ]
+    },
+    {
+      "name": "orders needing attention",
+      "sql": "WITH quoted AS (\n  SELECT *,\n    shipping.main.quote_cents(\n      destination, weight_g\n    ) AS shipping_cents\n  FROM orders\n)\nSELECT order_id, destination, shipping_cents,\n  revenue_cents - product_cost_cents\n    - shipping_cents AS margin_cents\nFROM quoted\nWHERE shipping_cents IS NULL\n   OR revenue_cents - product_cost_cents\n        - shipping_cents < 0\nORDER BY margin_cents NULLS LAST, order_id",
+      "status": "passed",
+      "rows": [
+        [
+          "A-103",
+          "CA",
+          1650,
+          -250
+        ],
+        [
+          "A-102",
+          "US",
+          1000,
+          -200
+        ],
+        [
+          "A-105",
+          "AU",
+          null,
+          null
+        ]
+      ],
+      "columns": [
+        "order_id",
+        "destination",
+        "shipping_cents",
+        "margin_cents"
+      ]
+    },
+    {
+      "name": "nulls and unsupported inputs",
+      "sql": "SELECT shipping.main.quote_cents(NULL::VARCHAR, 500::BIGINT), shipping.main.quote_cents('US', NULL::BIGINT), shipping.main.quote_cents('US', 0::BIGINT), shipping.main.quote_cents('AU', 500::BIGINT)",
+      "status": "passed",
+      "rows": [
+        [
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "columns": [
+        "shipping.main.quote_cents(CAST(NULL AS VARCHAR), CAST(500 AS BIGINT))",
+        "shipping.main.quote_cents('US', CAST(NULL AS BIGINT))",
+        "shipping.main.quote_cents('US', CAST(0 AS BIGINT))",
+        "shipping.main.quote_cents('AU', CAST(500 AS BIGINT))"
+      ]
+    },
+    {
+      "name": "multiple batches",
+      "sql": "SELECT count(*) FROM range(10000) WHERE shipping.main.quote_cents('US', (range % 100 + 1)::BIGINT) = 550",
+      "status": "passed",
+      "rows": [
+        [
+          10000
+        ]
+      ],
+      "columns": [
+        "count_star()"
+      ]
+    },
+    {
+      "name": "empty input",
+      "sql": "SELECT shipping.main.quote_cents(destination, weight_g) FROM orders WHERE false",
+      "status": "passed",
+      "rows": [],
+      "columns": [
+        "shipping.main.quote_cents(destination, weight_g)"
+      ]
+    }
+  ],
+  "extension_version": "ddc96dc7a9",
+  "extension_repository": "query_farm",
+  "platform": "osx_arm64",
+  "elapsed_seconds": 1.315
+}
