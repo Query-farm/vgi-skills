@@ -1,0 +1,7 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "query-farm",
+  "description": "Query Farm skills for building, testing, and packaging VGI workers.",
+  "owner": {"name": "Query Farm", "url": "https://query.farm"},
+  "plugins": [{"name": "vgi", "source": "./", "description": "Build, test, and package VGI workers in your chosen language."}]
+}

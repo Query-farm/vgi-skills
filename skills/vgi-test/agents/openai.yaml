@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test a VGI worker"
+  short_description: "Diagnose worker failures through real SQL tests"
+  default_prompt: "Use $vgi-test to diagnose this worker and verify its SQL results."

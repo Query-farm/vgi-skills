@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "catalog": "demo",
+  "worker": ["node", "--import", "tsx", "src/worker.ts"],
+  "checks": [
+    {"name": "accents and punctuation", "sql": "SELECT demo.main.slugify('Héllo, Wörld!') AS s", "columns": ["s"], "rows": [["hello-world"]]},
+    {"name": "trim and collapse", "sql": "SELECT demo.main.slugify('  --Crème Brûlée--  ')", "rows": [["creme-brulee"]]},
+    {"name": "special latin letters", "sql": "SELECT demo.main.slugify('Straße & Æsir, Łódź')", "rows": [["strasse-aesir-lodz"]]},
+    {"name": "NULL preserved", "sql": "SELECT demo.main.slugify(NULL::VARCHAR) IS NULL", "rows": [[true]]},
+    {"name": "mixed NULL and values in one column", "sql": "SELECT s, demo.main.slugify(s) FROM (VALUES (1, 'A  B'), (2, NULL), (3, '¡Olé!')) t(i, s) ORDER BY i", "rows": [["A  B", "a-b"], [null, null], ["¡Olé!", "ole"]]},
+    {"name": "only punctuation yields empty string", "sql": "SELECT demo.main.slugify('!!! ...')", "rows": [[""]]},
+    {"name": "return type is VARCHAR", "sql": "SELECT typeof(demo.main.slugify('x'))", "rows": [["VARCHAR"]]},
+    {"name": "empty input", "sql": "SELECT count(*) FROM (SELECT demo.main.slugify(s) FROM (SELECT 'a'::VARCHAR s) WHERE false)", "rows": [[0]]},
+    {"name": "multiple batches", "sql": "SELECT count(*), count(DISTINCT x), min(x), max(x) FROM (SELECT demo.main.slugify('Ítem #' || i::VARCHAR) x FROM range(5000) t(i))", "rows": [[5000, 5000, "item-0", "item-999"]]}
+  ]
+}

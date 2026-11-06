@@ -1,0 +1,10 @@
+{
+  "name": "query-farm",
+  "interface": {"displayName": "Query Farm"},
+  "plugins": [{
+    "name": "vgi",
+    "source": {"source": "url", "url": "https://github.com/Query-farm/vgi-skills.git"},
+    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+    "category": "Developer Tools"
+  }]
+}

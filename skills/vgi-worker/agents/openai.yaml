@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build a VGI worker"
+  short_description: "Build and verify SQL capabilities in your language"
+  default_prompt: "Use $vgi-worker to build and test a worker in my chosen language."

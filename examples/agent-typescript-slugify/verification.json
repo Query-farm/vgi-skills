@@ -1,0 +1,151 @@
+{
+  "status": "passed",
+  "engine": "duckdb",
+  "engine_version": "2.0.0",
+  "worker": [
+    "node",
+    "--import",
+    "tsx",
+    "src/worker.ts"
+  ],
+  "attach_sql": "ATTACH 'demo' AS \"demo\" (TYPE vgi, LOCATION 'node --import tsx src/worker.ts');",
+  "checks": [
+    {
+      "name": "accents and punctuation",
+      "sql": "SELECT demo.main.slugify('H\u00e9llo, W\u00f6rld!') AS s",
+      "status": "passed",
+      "rows": [
+        [
+          "hello-world"
+        ]
+      ],
+      "columns": [
+        "s"
+      ]
+    },
+    {
+      "name": "trim and collapse",
+      "sql": "SELECT demo.main.slugify('  --Cr\u00e8me Br\u00fbl\u00e9e--  ')",
+      "status": "passed",
+      "rows": [
+        [
+          "creme-brulee"
+        ]
+      ],
+      "columns": [
+        "demo.main.slugify('  --Cr\u00e8me Br\u00fbl\u00e9e--  ')"
+      ]
+    },
+    {
+      "name": "special latin letters",
+      "sql": "SELECT demo.main.slugify('Stra\u00dfe & \u00c6sir, \u0141\u00f3d\u017a')",
+      "status": "passed",
+      "rows": [
+        [
+          "strasse-aesir-lodz"
+        ]
+      ],
+      "columns": [
+        "demo.main.slugify('Stra\u00dfe & \u00c6sir, \u0141\u00f3d\u017a')"
+      ]
+    },
+    {
+      "name": "NULL preserved",
+      "sql": "SELECT demo.main.slugify(NULL::VARCHAR) IS NULL",
+      "status": "passed",
+      "rows": [
+        [
+          true
+        ]
+      ],
+      "columns": [
+        "(demo.main.slugify(CAST(NULL AS VARCHAR)) IS NULL)"
+      ]
+    },
+    {
+      "name": "mixed NULL and values in one column",
+      "sql": "SELECT s, demo.main.slugify(s) FROM (VALUES (1, 'A  B'), (2, NULL), (3, '\u00a1Ol\u00e9!')) t(i, s) ORDER BY i",
+      "status": "passed",
+      "rows": [
+        [
+          "A  B",
+          "a-b"
+        ],
+        [
+          null,
+          null
+        ],
+        [
+          "\u00a1Ol\u00e9!",
+          "ole"
+        ]
+      ],
+      "columns": [
+        "s",
+        "demo.main.slugify(s)"
+      ]
+    },
+    {
+      "name": "only punctuation yields empty string",
+      "sql": "SELECT demo.main.slugify('!!! ...')",
+      "status": "passed",
+      "rows": [
+        [
+          ""
+        ]
+      ],
+      "columns": [
+        "demo.main.slugify('!!! ...')"
+      ]
+    },
+    {
+      "name": "return type is VARCHAR",
+      "sql": "SELECT typeof(demo.main.slugify('x'))",
+      "status": "passed",
+      "rows": [
+        [
+          "VARCHAR"
+        ]
+      ],
+      "columns": [
+        "typeof(demo.main.slugify('x'))"
+      ]
+    },
+    {
+      "name": "empty input",
+      "sql": "SELECT count(*) FROM (SELECT demo.main.slugify(s) FROM (SELECT 'a'::VARCHAR s) WHERE false)",
+      "status": "passed",
+      "rows": [
+        [
+          0
+        ]
+      ],
+      "columns": [
+        "count_star()"
+      ]
+    },
+    {
+      "name": "multiple batches",
+      "sql": "SELECT count(*), count(DISTINCT x), min(x), max(x) FROM (SELECT demo.main.slugify('\u00cdtem #' || i::VARCHAR) x FROM range(5000) t(i))",
+      "status": "passed",
+      "rows": [
+        [
+          5000,
+          5000,
+          "item-0",
+          "item-999"
+        ]
+      ],
+      "columns": [
+        "count_star()",
+        "count(DISTINCT x)",
+        "min(x)",
+        "max(x)"
+      ]
+    }
+  ],
+  "extension_version": "ddc96dc7a9",
+  "extension_repository": "query_farm",
+  "platform": "osx_arm64",
+  "elapsed_seconds": 1.21
+}

@@ -1,0 +1,10 @@
+{
+  "name": "vgi",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Build, test, and package VGI workers in your chosen language.",
+  "author": {"name": "Query Farm", "url": "https://query.farm"},
+  "homepage": "https://query.farm/vgi/build-with-an-agent",
+  "repository": "https://github.com/Query-farm/vgi-skills",
+  "keywords": ["vgi", "duckdb", "haybarn", "sql", "arrow"]
+}

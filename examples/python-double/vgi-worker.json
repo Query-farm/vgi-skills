@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "catalog": "demo",
+  "worker": ["uv", "run", "worker.py"],
+  "checks": [
+    {"name": "known values", "sql": "SELECT demo.main.double(21), demo.main.double(-4), demo.main.double(0)", "rows": [[42, -8, 0]]},
+    {"name": "nulls", "sql": "SELECT demo.main.double(NULL::BIGINT)", "rows": [[null]]},
+    {"name": "multiple batches", "sql": "SELECT count(*), sum(demo.main.double(i))::BIGINT FROM range(5000) t(i)", "rows": [[5000, 24995000]]},
+    {"name": "empty input", "sql": "SELECT demo.main.double(i) FROM range(0) t(i)", "rows": []}
+  ]
+}

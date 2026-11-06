@@ -1,0 +1,24 @@
+{
+  "name": "demo-slugify-vgi-worker",
+  "version": "1.0.0",
+  "description": "VGI worker exposing demo.main.slugify(VARCHAR) -> VARCHAR",
+  "scripts": {
+    "start": "node --import tsx src/worker.ts",
+    "typecheck": "tsc",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:sql": "uv run --with duckdb==2.0.0 python ../../skills/vgi-worker/scripts/verify_worker.py --project . --output verification.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@query-farm/apache-arrow": "21.1.1",
+    "@query-farm/vgi": "0.48.0",
+    "@query-farm/vgi-rpc": "0.29.2"
+  },
+  "devDependencies": {
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  },
+  "private": true
+}

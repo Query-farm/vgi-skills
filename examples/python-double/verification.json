@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "engine": "haybarn",
+  "engine_version": "2.0.0rc11",
+  "worker": [
+    "uv",
+    "run",
+    "worker.py"
+  ],
+  "attach_sql": "ATTACH 'demo' AS \"demo\" (TYPE vgi, LOCATION 'uv run worker.py');",
+  "checks": [
+    {
+      "name": "known values",
+      "sql": "SELECT demo.main.double(21), demo.main.double(-4), demo.main.double(0)",
+      "status": "passed",
+      "rows": [
+        [
+          42,
+          -8,
+          0
+        ]
+      ],
+      "columns": [
+        "demo.main.\"double\"(21)",
+        "demo.main.\"double\"(-4)",
+        "demo.main.\"double\"(0)"
+      ]
+    },
+    {
+      "name": "nulls",
+      "sql": "SELECT demo.main.double(NULL::BIGINT)",
+      "status": "passed",
+      "rows": [
+        [
+          null
+        ]
+      ],
+      "columns": [
+        "demo.main.\"double\"(CAST(NULL AS BIGINT))"
+      ]
+    },
+    {
+      "name": "multiple batches",
+      "sql": "SELECT count(*), sum(demo.main.double(i))::BIGINT FROM range(5000) t(i)",
+      "status": "passed",
+      "rows": [
+        [
+          5000,
+          24995000
+        ]
+      ],
+      "columns": [
+        "count_star()",
+        "CAST(sum(demo.main.\"double\"(i)) AS BIGINT)"
+      ]
+    },
+    {
+      "name": "empty input",
+      "sql": "SELECT demo.main.double(i) FROM range(0) t(i)",
+      "status": "passed",
+      "rows": [],
+      "columns": [
+        "demo.main.\"double\"(i)"
+      ]
+    }
+  ],
+  "elapsed_seconds": 3.602
+}

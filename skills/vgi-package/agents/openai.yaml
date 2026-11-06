@@ -1,0 +1,4 @@
+interface:
+  display_name: "Package a VGI worker"
+  short_description: "Package a tested worker with runtime instructions"
+  default_prompt: "Use $vgi-package to prepare and verify a local worker archive."
