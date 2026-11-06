@@ -18,5 +18,7 @@ jobs:
       - run: uv run --python 3.13 --with duckdb==2.0.0 python skills/vgi-worker/scripts/verify_worker.py --project examples/typescript-double
       - run: npm ci && npm test && npm run typecheck && npm run test:sql
         working-directory: examples/agent-typescript-slugify
+      - run: npm ci && npm test && npm run typecheck && npm run verify:sql
+        working-directory: examples/agent-duckdb-typescript-slugify
       - run: uv run --python 3.13 --with haybarn==2.0.0rc11 python skills/vgi-worker/scripts/verify_worker.py --engine haybarn --project examples/python-double
       - run: uv run --python 3.13 --with haybarn==2.0.0rc11 python skills/vgi-worker/scripts/verify_worker.py --engine haybarn --project examples/typescript-double

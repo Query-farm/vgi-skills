@@ -10,7 +10,7 @@ for path in sorted((root / ".eval-runs").glob("*/result.json")):
     result = json.loads(path.read_text())
     result["run_id"] = path.parent.name
     result["human_interventions"] = 0
-    result.setdefault("engine", "haybarn")
+    result.setdefault("engine", "not-run" if result["case"] == "language-choice" else "haybarn")
     events = path.parent / "events.jsonl"
     if events.exists():
         for line in events.read_text().splitlines():

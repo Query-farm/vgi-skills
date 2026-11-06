@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "catalog": "demo",
+  "worker": [
+    "node",
+    "--import",
+    "tsx",
+    "worker.ts"
+  ],
+  "checks": [
+    {
+      "name": "basic punctuation and case",
+      "sql": "SELECT demo.main.slugify('Hello, World!') AS slug",
+      "columns": [
+        "slug"
+      ],
+      "rows": [
+        [
+          "hello-world"
+        ]
+      ]
+    },
+    {
+      "name": "accented Latin transliteration",
+      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, '  --Cr\u00e8me Br\u00fbl\u00e9e--  '), (2, '\u00c5ngstr\u00f6m \u00d8resund Stra\u00dfe'), (3, '\u0141\u00f3d\u017a & Krak\u00f3w'), (4, '\u00c6sir/\u0152uvre__\u00deorn')) t(id, v) ORDER BY id",
+      "rows": [
+        [
+          "creme-brulee"
+        ],
+        [
+          "angstrom-oresund-strasse"
+        ],
+        [
+          "lodz-krakow"
+        ],
+        [
+          "aesir-oeuvre-thorn"
+        ]
+      ]
+    },
+    {
+      "name": "whitespace and punctuation runs collapse, edges trimmed",
+      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, E'multiple   spaces\\t\\nand...dots'), (2, 'Version 2.0 (beta)'), (3, '!!!'), (4, '')) t(id, v) ORDER BY id",
+      "rows": [
+        [
+          "multiple-spaces-and-dots"
+        ],
+        [
+          "version-2-0-beta"
+        ],
+        [
+          ""
+        ],
+        [
+          ""
+        ]
+      ]
+    },
+    {
+      "name": "SQL NULL preserved",
+      "sql": "SELECT demo.main.slugify(CAST(NULL AS VARCHAR)) IS NULL, demo.main.slugify(v) FROM (VALUES (1, 'A B'), (2, NULL), (3, 'C')) t(id, v) ORDER BY id",
+      "rows": [
+        [
+          true,
+          "a-b"
+        ],
+        [
+          true,
+          null
+        ],
+        [
+          true,
+          "c"
+        ]
+      ]
+    },
+    {
+      "name": "return type is VARCHAR",
+      "sql": "SELECT typeof(demo.main.slugify('x'))",
+      "rows": [
+        [
+          "VARCHAR"
+        ]
+      ]
+    },
+    {
+      "name": "multiple batches with interleaved NULLs",
+      "sql": "SELECT count(*), count(s), count(DISTINCT s), min(s), max(s) FROM (SELECT demo.main.slugify(CASE WHEN i % 10 = 0 THEN NULL ELSE 'Item #' || i || ' Caf\u00e9' END) AS s FROM range(5000) t(i))",
+      "rows": [
+        [
+          5000,
+          4500,
+          4500,
+          "item-1-cafe",
+          "item-999-cafe"
+        ]
+      ]
+    },
+    {
+      "name": "empty input",
+      "sql": "SELECT count(demo.main.slugify(v)) FROM (SELECT 'x' AS v WHERE false)",
+      "rows": [
+        [
+          0
+        ]
+      ]
+    }
+  ]
+}

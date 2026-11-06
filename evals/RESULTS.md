@@ -14,12 +14,12 @@ Small exploratory sample, not a reliability or speed guarantee. CLI configured/d
 | --- | --- | --- | --- | --- | ---: | ---: |
 | claude | typescript-build | haybarn | yes | passed | 102.6s | 1.6s |
 | codex | python-build | haybarn | yes | passed | 253.3s | 3.1s |
-| claude | language-choice | haybarn | yes | passed | 15.6s | 0.0s |
+| claude | language-choice | not-run | yes | passed | 15.6s | 0.0s |
 | claude | python-build | haybarn | yes | passed | 160.0s | 3.2s |
 | claude | repair-typescript | haybarn | yes | passed | 65.9s | 0.9s |
 | codex | typescript-build | haybarn | yes | passed | 319.0s | 0.7s |
 | claude | typescript-build | haybarn | no | Excluded: harness contract | 169.4s | 0.3s |
-| codex | language-choice | haybarn | yes | passed | 38.8s | 0.0s |
+| codex | language-choice | not-run | yes | passed | 38.8s | 0.0s |
 | claude | package-python | haybarn | yes | passed | 123.3s | 2.6s |
 | codex | python-build | haybarn | no | Excluded: harness contract | 273.7s | 0.1s |
 | claude | typescript-build | haybarn | no | passed | 156.4s | 0.7s |
@@ -28,6 +28,8 @@ Small exploratory sample, not a reliability or speed guarantee. CLI configured/d
 | codex | python-build | haybarn | no | passed | 294.8s | 0.7s |
 | claude | csharp-build | haybarn | yes | passed | 135.3s | 0.8s |
 | claude | java-build | haybarn | yes | passed | 136.5s | 1.2s |
+| claude | typescript-build | duckdb | yes | passed | 98.4s | 1.0s |
+| codex | python-build | duckdb | yes | passed | 258.5s | 1.4s |
 
 ## Interpretation
 

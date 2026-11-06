@@ -1,0 +1,29 @@
+{
+  "checked_on": "2026-11-06",
+  "source": "Query-farm/vgi-skills@feat/initial-agent-skills",
+  "source_commit": "8173a02",
+  "portable_install": {
+    "status": "passed",
+    "scope": "fresh temporary project; all three skills",
+    "agents": [
+      "codex",
+      "claude-code",
+      "cursor",
+      "github-copilot",
+      "opencode"
+    ],
+    "mode": "copy"
+  },
+  "native_claude_plugin_validation": "passed without warnings",
+  "linux_ci": {
+    "status": "passed",
+    "url": "https://github.com/Query-farm/vgi-skills/actions/runs/42281337640",
+    "coverage": [
+      "helper unit tests",
+      "Python fixture on stock DuckDB and Haybarn",
+      "TypeScript fixture on stock DuckDB and Haybarn",
+      "agent-generated TypeScript example: unit tests, typecheck, SQL on stock DuckDB"
+    ]
+  },
+  "limitations": "Portable installation does not establish successful autonomous execution for Cursor, Copilot, or OpenCode. Live agent sessions cover Codex and Claude Code."
+}

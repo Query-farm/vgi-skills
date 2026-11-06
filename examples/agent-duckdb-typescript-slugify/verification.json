@@ -1,0 +1,145 @@
+{
+  "status": "passed",
+  "engine": "duckdb",
+  "engine_version": "2.0.0",
+  "worker": [
+    "node",
+    "--import",
+    "tsx",
+    "worker.ts"
+  ],
+  "attach_sql": "ATTACH 'demo' AS \"demo\" (TYPE vgi, LOCATION 'node --import tsx worker.ts');",
+  "checks": [
+    {
+      "name": "basic punctuation and case",
+      "sql": "SELECT demo.main.slugify('Hello, World!') AS slug",
+      "status": "passed",
+      "rows": [
+        [
+          "hello-world"
+        ]
+      ],
+      "columns": [
+        "slug"
+      ]
+    },
+    {
+      "name": "accented Latin transliteration",
+      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, '  --Cr\u00e8me Br\u00fbl\u00e9e--  '), (2, '\u00c5ngstr\u00f6m \u00d8resund Stra\u00dfe'), (3, '\u0141\u00f3d\u017a & Krak\u00f3w'), (4, '\u00c6sir/\u0152uvre__\u00deorn')) t(id, v) ORDER BY id",
+      "status": "passed",
+      "rows": [
+        [
+          "creme-brulee"
+        ],
+        [
+          "angstrom-oresund-strasse"
+        ],
+        [
+          "lodz-krakow"
+        ],
+        [
+          "aesir-oeuvre-thorn"
+        ]
+      ],
+      "columns": [
+        "demo.main.slugify(v)"
+      ]
+    },
+    {
+      "name": "whitespace and punctuation runs collapse, edges trimmed",
+      "sql": "SELECT demo.main.slugify(v) FROM (VALUES (1, E'multiple   spaces\\t\\nand...dots'), (2, 'Version 2.0 (beta)'), (3, '!!!'), (4, '')) t(id, v) ORDER BY id",
+      "status": "passed",
+      "rows": [
+        [
+          "multiple-spaces-and-dots"
+        ],
+        [
+          "version-2-0-beta"
+        ],
+        [
+          ""
+        ],
+        [
+          ""
+        ]
+      ],
+      "columns": [
+        "demo.main.slugify(v)"
+      ]
+    },
+    {
+      "name": "SQL NULL preserved",
+      "sql": "SELECT demo.main.slugify(CAST(NULL AS VARCHAR)) IS NULL, demo.main.slugify(v) FROM (VALUES (1, 'A B'), (2, NULL), (3, 'C')) t(id, v) ORDER BY id",
+      "status": "passed",
+      "rows": [
+        [
+          true,
+          "a-b"
+        ],
+        [
+          true,
+          null
+        ],
+        [
+          true,
+          "c"
+        ]
+      ],
+      "columns": [
+        "(demo.main.slugify(CAST(NULL AS VARCHAR)) IS NULL)",
+        "demo.main.slugify(v)"
+      ]
+    },
+    {
+      "name": "return type is VARCHAR",
+      "sql": "SELECT typeof(demo.main.slugify('x'))",
+      "status": "passed",
+      "rows": [
+        [
+          "VARCHAR"
+        ]
+      ],
+      "columns": [
+        "typeof(demo.main.slugify('x'))"
+      ]
+    },
+    {
+      "name": "multiple batches with interleaved NULLs",
+      "sql": "SELECT count(*), count(s), count(DISTINCT s), min(s), max(s) FROM (SELECT demo.main.slugify(CASE WHEN i % 10 = 0 THEN NULL ELSE 'Item #' || i || ' Caf\u00e9' END) AS s FROM range(5000) t(i))",
+      "status": "passed",
+      "rows": [
+        [
+          5000,
+          4500,
+          4500,
+          "item-1-cafe",
+          "item-999-cafe"
+        ]
+      ],
+      "columns": [
+        "count_star()",
+        "count(s)",
+        "count(DISTINCT s)",
+        "min(s)",
+        "max(s)"
+      ]
+    },
+    {
+      "name": "empty input",
+      "sql": "SELECT count(demo.main.slugify(v)) FROM (SELECT 'x' AS v WHERE false)",
+      "status": "passed",
+      "rows": [
+        [
+          0
+        ]
+      ],
+      "columns": [
+        "count(demo.main.slugify(v))"
+      ]
+    }
+  ],
+  "extension_version": "ddc96dc7a9",
+  "extension_repository": "query_farm",
+  "platform": "osx_arm64",
+  "elapsed_seconds": 1.031
+}

@@ -1,0 +1,22 @@
+{
+  "name": "slugify-vgi-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --import tsx worker.ts",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc -p .",
+    "verify:sql": "uv run --with duckdb==2.0.0 python ../../skills/vgi-worker/scripts/verify_worker.py --project . --timeout 180 --output verification.json"
+  },
+  "dependencies": {
+    "@query-farm/apache-arrow": "21.1.1",
+    "@query-farm/vgi": "0.48.0",
+    "@query-farm/vgi-rpc": "0.29.2"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
+}

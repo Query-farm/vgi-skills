@@ -88,7 +88,8 @@ Stock DuckDB 2.0.0 is the default tested engine, using `INSTALL vgi FROM query_f
 
 - [Python scalar fixture](examples/python-double/)
 - [TypeScript scalar fixture](examples/typescript-double/) — run `npm ci` first
-- [Agent-built TypeScript slugification worker](examples/agent-typescript-slugify/) — the recorded demo's source and tests
+- [Agent-built TypeScript worker on stock DuckDB](examples/agent-duckdb-typescript-slugify/) — the recorded demo’s source and tests
+- [Original Haybarn TypeScript example](examples/agent-typescript-slugify/) — also reverified on stock DuckDB
 - [SDK versions and language references](skills/vgi-worker/references/languages.md)
 - [SDK compatibility evidence on Haybarn](evals/compatibility.json)
 - [Stock DuckDB checks of generated workers](evals/stock-duckdb.json)
