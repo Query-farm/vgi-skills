@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "catalog": "github",
+  "worker": [
+    ".venv/bin/python",
+    "-m",
+    "tests.fixture_worker"
+  ],
+  "checks": [
+    {
+      "name": "two HTTP pages: representative values and nulls",
+      "sql": "SELECT * FROM github.main.releases('duckdb', 'duckdb') ORDER BY tag_name",
+      "columns": [
+        "tag_name",
+        "name",
+        "published_at",
+        "html_url",
+        "prerelease"
+      ],
+      "rows": [
+        [
+          "undated",
+          null,
+          null,
+          "https://github.com/duckdb/duckdb/releases/tag/undated",
+          false
+        ],
+        [
+          "v1.0.0",
+          null,
+          "2025-05-01T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v1.0.0",
+          false
+        ],
+        [
+          "v1.1.0",
+          "Old release",
+          "2025-06-01T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v1.1.0",
+          false
+        ],
+        [
+          "v1.9.0",
+          "Previous publication",
+          "2026-05-01T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v1.9.0",
+          false
+        ],
+        [
+          "v2.0.0",
+          "Latest stable publication",
+          "2026-06-01T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v2.0.0",
+          false
+        ],
+        [
+          "v3.0.0-rc1",
+          "Newest prerelease",
+          "2026-06-10T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v3.0.0-rc1",
+          true
+        ],
+        [
+          "v9.0.0",
+          "Older publication",
+          "2026-01-01T00:00:00Z",
+          "https://github.com/duckdb/duckdb/releases/tag/v9.0.0",
+          false
+        ]
+      ]
+    },
+    {
+      "name": "SQL types match the contract",
+      "sql": "SELECT typeof(tag_name), typeof(name), typeof(published_at), typeof(html_url), typeof(prerelease) FROM github.main.releases('duckdb', 'duckdb') LIMIT 1",
+      "rows": [
+        [
+          "VARCHAR",
+          "VARCHAR",
+          "VARCHAR",
+          "VARCHAR",
+          "BOOLEAN"
+        ]
+      ]
+    },
+    {
+      "name": "empty result retains column names",
+      "sql": "SELECT * FROM github.main.releases('fixture', 'empty')",
+      "columns": [
+        "tag_name",
+        "name",
+        "published_at",
+        "html_url",
+        "prerelease"
+      ],
+      "rows": []
+    },
+    {
+      "name": "maximum three pages of five",
+      "sql": "SELECT count(*), min(tag_name), max(tag_name) FROM github.main.releases('fixture', 'cap')",
+      "rows": [
+        [
+          15,
+          "page-1-row-0",
+          "page-3-row-4"
+        ]
+      ]
+    },
+    {
+      "name": "live demo SQL with deterministic HTTP and local inventory",
+      "sql": "-- Run after attaching github (see README.md). One bounded API scan, outside the inventory join.\n-- Inventory is fictional. Different tags are review candidates, not guaranteed safe upgrades.\nWITH fetched AS MATERIALIZED (\n    SELECT * FROM github.main.releases('duckdb', 'duckdb')\n), latest AS (\n    SELECT tag_name, html_url\n    FROM fetched\n    WHERE prerelease = false AND published_at IS NOT NULL\n    ORDER BY CAST(published_at AS TIMESTAMPTZ) DESC\n    LIMIT 1\n)\nSELECT inventory.project,\n       inventory.installed_tag,\n       latest.tag_name AS published_tag,\n       latest.html_url AS release_url\nFROM read_csv('inventory.csv', header = true, all_varchar = true) AS inventory\nCROSS JOIN latest\nWHERE inventory.owner = 'duckdb'\n  AND inventory.repo = 'duckdb'\n  AND inventory.installed_tag <> latest.tag_name\nORDER BY inventory.project;\n",
+      "columns": [
+        "project",
+        "installed_tag",
+        "published_tag",
+        "release_url"
+      ],
+      "rows": [
+        [
+          "Analytics demo",
+          "v1.0.0",
+          "v2.0.0",
+          "https://github.com/duckdb/duckdb/releases/tag/v2.0.0"
+        ],
+        [
+          "Reporting demo",
+          "v1.1.0",
+          "v2.0.0",
+          "https://github.com/duckdb/duckdb/releases/tag/v2.0.0"
+        ]
+      ]
+    }
+  ]
+}

@@ -24,3 +24,5 @@ jobs:
       - run: uv run --python 3.13 --with haybarn==2.0.0rc11 python skills/vgi-worker/scripts/verify_worker.py --engine haybarn --project examples/typescript-double
       - run: npm ci && npm test && npm run typecheck && npm run verify:sql
         working-directory: examples/shipping-margin
+      - run: uv sync --frozen --python 3.13 && uv run --frozen python -m unittest discover -s tests -v && uv run --frozen python verify.py
+        working-directory: examples/agent-github-releases

@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-11-06T21:58:52.291543+00:00",
+  "agent": "Codex CLI",
+  "agent_version": "0.167.0",
+  "configured_model_shown_in_terminal": "GPT-6-Astra xhigh",
+  "model_override": false,
+  "engine": "2.0.0",
+  "extension": "ae2db4231d",
+  "platform": "osx_arm64",
+  "status": "passed",
+  "cli_reported_work_seconds": 431,
+  "full_capture_seconds": 490.92,
+  "highlight_seconds": 86,
+  "unit_and_sql_tests": 16,
+  "verifier_sql_assertions": 5,
+  "live_query_rows": 2,
+  "human_actions": [
+    "Confirmed initial folder trust prompt before the task ran"
+  ],
+  "human_source_corrections": 0,
+  "starting_files": [
+    "BRIEF.md",
+    "inventory.csv",
+    "installed vgi-worker skill"
+  ],
+  "cache": "Configured CLI and shared dependency caches; project extension cache started empty",
+  "source_sha256": {
+    "github_worker.py": "6d7e897e459403beda89f437ab97c4e99b73c17aa149fd957d9a83d684de9b82",
+    "duckdb_runtime.py": "27769614da35cf58ce08372c52ac557874ecd353541a83706d8864a5f4ccd21f",
+    "run_demo.py": "b4f0261d4a4c91d3a197560ea6be7445cd9994cfe98f5812fff7fa562d5bbe14",
+    "demo.sql": "42a5562a8c327299638d1ceb73e1394d0ffd20d5a77014d4a7d18b844c101e01"
+  },
+  "limitations": [
+    "One recorded interactive run, not a completion-time guarantee",
+    "GitHub reads are limited to three pages of five releases",
+    "Project inventory is fictional sample data",
+    "Live API query is separate from deterministic CI tests"
+  ],
+  "independent_verification": "examples/agent-github-releases/independent-verification.json"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "checks": [
+    "live SQL schema and values match the independent direct API response",
+    "bounded at 15 releases"
+  ],
+  "rows_returned": 15,
+  "first_page_checked": 5
+}

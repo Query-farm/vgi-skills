@@ -1,0 +1,39 @@
+{
+  "recorded_at": "2026-11-06T21:58:52.291543+00:00",
+  "source": "https://api.github.com/repos/duckdb/duckdb/releases",
+  "live_api": true,
+  "inventory": "inventory.csv (fictional sample data)",
+  "limits": {
+    "max_pages": 3,
+    "per_page": 5,
+    "max_releases": 15
+  },
+  "selection": "Most recently published non-prerelease among fetched rows; differing tags are not necessarily safe upgrades",
+  "engine": "duckdb",
+  "engine_version": "2.0.0",
+  "extension_version": "ae2db4231d",
+  "platform": "osx_arm64",
+  "attach_sql": "ATTACH 'github' AS github (TYPE vgi, LOCATION '.venv/bin/python github_worker.py');",
+  "sql": "-- Run after attaching github (see README.md). One bounded API scan, outside the inventory join.\n-- Inventory is fictional. Different tags are review candidates, not guaranteed safe upgrades.\nWITH fetched AS MATERIALIZED (\n    SELECT * FROM github.main.releases('duckdb', 'duckdb')\n), latest AS (\n    SELECT tag_name, html_url\n    FROM fetched\n    WHERE prerelease = false AND published_at IS NOT NULL\n    ORDER BY CAST(published_at AS TIMESTAMPTZ) DESC\n    LIMIT 1\n)\nSELECT inventory.project,\n       inventory.installed_tag,\n       latest.tag_name AS published_tag,\n       latest.html_url AS release_url\nFROM read_csv('inventory.csv', header = true, all_varchar = true) AS inventory\nCROSS JOIN latest\nWHERE inventory.owner = 'duckdb'\n  AND inventory.repo = 'duckdb'\n  AND inventory.installed_tag <> latest.tag_name\nORDER BY inventory.project;\n",
+  "columns": [
+    "project",
+    "installed_tag",
+    "published_tag",
+    "release_url"
+  ],
+  "rows": [
+    [
+      "Analytics demo",
+      "v1.0.0",
+      "v2.0.0",
+      "https://github.com/duckdb/duckdb/releases/tag/v2.0.0"
+    ],
+    [
+      "Reporting demo",
+      "v1.1.0",
+      "v2.0.0",
+      "https://github.com/duckdb/duckdb/releases/tag/v2.0.0"
+    ]
+  ],
+  "elapsed_seconds": 1.439
+}

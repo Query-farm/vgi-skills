@@ -1,0 +1,13 @@
+{
+  "1": [
+    {"tag_name": "v9.0.0", "name": "Older publication", "published_at": "2026-01-01T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v9.0.0", "prerelease": false},
+    {"tag_name": "v3.0.0-rc1", "name": "Newest prerelease", "published_at": "2026-06-10T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v3.0.0-rc1", "prerelease": true},
+    {"tag_name": "v1.0.0", "name": null, "published_at": "2025-05-01T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v1.0.0", "prerelease": false},
+    {"tag_name": "undated", "html_url": "https://github.com/duckdb/duckdb/releases/tag/undated", "prerelease": false},
+    {"tag_name": "v1.1.0", "name": "Old release", "published_at": "2025-06-01T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v1.1.0", "prerelease": false}
+  ],
+  "7": [
+    {"tag_name": "v2.0.0", "name": "Latest stable publication", "published_at": "2026-06-01T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v2.0.0", "prerelease": false},
+    {"tag_name": "v1.9.0", "name": "Previous publication", "published_at": "2026-05-01T00:00:00Z", "html_url": "https://github.com/duckdb/duckdb/releases/tag/v1.9.0", "prerelease": false}
+  ]
+}
