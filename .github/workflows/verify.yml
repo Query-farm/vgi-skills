@@ -26,3 +26,4 @@ jobs:
         working-directory: examples/shipping-margin
       - run: uv sync --frozen --python 3.13 && uv run --frozen python -m unittest discover -s tests -v && uv run --frozen python verify.py
         working-directory: examples/agent-github-releases
+      - run: uv run --python 3.13 examples/photo-catalog/demo.py

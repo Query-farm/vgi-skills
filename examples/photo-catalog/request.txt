@@ -1,0 +1,1 @@
+Use the vgi-worker skill to make my photo metadata queryable in DuckDB: file paths, camera models, dates, and GPS coordinates where available. Ask me which folder and language to use. Keep the files unchanged and the data local. Build and test the worker, then show me how to ATTACH and query it.

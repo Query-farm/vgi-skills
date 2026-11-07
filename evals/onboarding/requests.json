@@ -1,0 +1,14 @@
+[
+  {
+    "id": "api",
+    "prompt": "Use the vgi-worker skill to connect an API or data service to DuckDB as a SQL catalog, so I can join its records to a local CSV. Ask me which source and language to use, then build and test the worker and show me how to ATTACH and query it."
+  },
+  {
+    "id": "files",
+    "prompt": "Use the vgi-worker skill to make my photo metadata queryable in DuckDB: file paths, camera models, dates, and GPS coordinates where available. Ask me which folder and language to use. Keep the files unchanged and the data local. Build and test the worker, then show me how to ATTACH and query it."
+  },
+  {
+    "id": "library",
+    "prompt": "Use the vgi-worker skill to wrap our validation library so I can find invalid records in DuckDB. Ask me which library and language to use, and for examples of valid and invalid inputs. Build and test the worker, then show me how to ATTACH it and query a local CSV."
+  }
+]

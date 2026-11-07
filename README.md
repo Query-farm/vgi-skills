@@ -86,16 +86,18 @@ Stock DuckDB 2.0.0 is the default tested engine, using `INSTALL vgi FROM query_f
 
 ## Examples and compatibility
 
+- [Photo catalog: a complete two-turn agent build](examples/photo-catalog/) — sample inputs, unchanged generated worker, SQL checks, and a portable runner
 - [Shipping margins: one function to an actionable SQL report](examples/shipping-margin/) — fictional orders/rates with verified results
 
 - [Python scalar fixture](examples/python-double/)
 - [TypeScript scalar fixture](examples/typescript-double/) — run `npm ci` first
-- [Agent-built TypeScript worker on stock DuckDB](examples/agent-duckdb-typescript-slugify/) — the recorded demo’s source and tests
+- [Agent-built TypeScript worker on stock DuckDB](examples/agent-duckdb-typescript-slugify/) — generated source and repeatable tests
 - [Original Haybarn TypeScript example](examples/agent-typescript-slugify/) — also reverified on stock DuckDB
 - [SDK versions and language references](skills/vgi-worker/references/languages.md)
 - [SDK compatibility evidence on Haybarn](evals/compatibility.json)
 - [Stock DuckDB checks of generated workers](evals/stock-duckdb.json)
 - [Agent evaluation results](evals/RESULTS.md)
+- [Website onboarding evaluation](evals/onboarding/README.md) — exact copyable requests, language selection, resumed conversations, and independent SQL checks
 
 SDK compatibility checks and agent evaluations are different measurements. Do not generalize a single successful run into a universal five-minute guarantee.
 
@@ -119,6 +121,8 @@ python3 scripts/evaluate.py --agent claude --case typescript-build --without-ski
 ```
 
 These commands invoke real agent sessions and consume normal account usage. They create disposable projects under `.eval-runs/`, retain prompts/logs/results, impose a deadline, and independently verify generated workers. The harness uses the agent's configured/default model; it does not select a model. Additional cases cover language choice, repair, and packaging. Keep raw account-specific logs out of published results.
+
+The [onboarding harness](evals/onboarding/README.md) separately tests the short website requests without preselecting a language in the opening turn. It resumes the same agent session with the developer's answer and verifies the resulting worker against independent expectations.
 
 ### Verified integration build
 

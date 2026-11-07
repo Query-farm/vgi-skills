@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "catalog": "photos",
+  "worker": ["uv", "run", "--frozen", "--project", ".", "python", "photo_worker.py"],
+  "checks": [
+    {
+      "name": "original photos: metadata, no-EXIF row, corrupt and nested skipped",
+      "sql": "SELECT parse_filename(path) AS name, size_bytes, camera_model, CAST(taken_at AS VARCHAR) AS taken_at, latitude, round(longitude, 6) AS longitude FROM photos.main.files('../inputs/photos') ORDER BY name",
+      "columns": ["name", "size_bytes", "camera_model", "taken_at", "latitude", "longitude"],
+      "rows": [
+        ["north.jpg", 854, "Fixture Camera A", "2025-01-02 03:04:05", 40.5, -73.75],
+        ["plain.jpg", 668, null, null, null, null],
+        ["south.jpg", 854, "Fixture Camera B", "2024-06-15 12:30:00", -33.875, 151.2]
+      ]
+    },
+    {
+      "name": "paths are absolute",
+      "sql": "SELECT count(*) FILTER (WHERE starts_with(path, '/') AND path LIKE '%/inputs/photos/%.jpg') FROM photos.main.files('../inputs/photos')",
+      "rows": [[3]]
+    },
+    {
+      "name": "column types",
+      "sql": "SELECT typeof(path), typeof(size_bytes), typeof(camera_model), typeof(taken_at), typeof(latitude), typeof(longitude) FROM photos.main.files('../inputs/photos') LIMIT 1",
+      "rows": [["VARCHAR", "BIGINT", "VARCHAR", "TIMESTAMP", "DOUBLE", "DOUBLE"]]
+    },
+    {
+      "name": "NULL folder returns no rows",
+      "sql": "SELECT count(*) FROM photos.main.files(NULL)",
+      "rows": [[0]]
+    },
+    {
+      "name": "typed NULL folder returns no rows",
+      "sql": "SELECT count(*) FROM photos.main.files(CAST(NULL AS VARCHAR))",
+      "rows": [[0]]
+    },
+    {
+      "name": "empty folder returns no rows",
+      "sql": "SELECT count(*) FROM photos.main.files('../inputs/empty')",
+      "rows": [[0]]
+    },
+    {
+      "name": "multi-batch folder: 301 rows; symlinks, nested, truncated, non-JPEG skipped",
+      "sql": "SELECT count(*), count(DISTINCT path), sum(size_bytes), count(latitude), count(*) FILTER (WHERE parse_filename(path) IN ('link.jpg','dirlink.jpg','inner.jpg','truncated.jpg','readme.txt')), count(*) FILTER (WHERE parse_filename(path) = 'UPPER.JPEG') FROM photos.main.files('tests/fixtures/many')",
+      "rows": [[301, 301, 238454, 201, 0, 1]]
+    },
+    {
+      "name": "group by camera and year",
+      "sql": "SELECT coalesce(camera_model, '(unknown)') AS camera, year(taken_at) AS year, count(*) AS photos FROM photos.main.files('../inputs/photos') GROUP BY ALL ORDER BY camera",
+      "columns": ["camera", "year", "photos"],
+      "rows": [
+        ["(unknown)", null, 1],
+        ["Fixture Camera A", 2025, 1],
+        ["Fixture Camera B", 2024, 1]
+      ]
+    },
+    {
+      "name": "photos with GPS coordinates",
+      "sql": "SELECT parse_filename(path) AS name, latitude, round(longitude, 6) AS longitude FROM photos.main.files('../inputs/photos') WHERE latitude IS NOT NULL AND longitude IS NOT NULL ORDER BY name",
+      "columns": ["name", "latitude", "longitude"],
+      "rows": [
+        ["north.jpg", 40.5, -73.75],
+        ["south.jpg", -33.875, 151.2]
+      ]
+    }
+  ]
+}

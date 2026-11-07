@@ -1,0 +1,14 @@
+{
+  "recorded_on": "2026-11-07",
+  "agent": "2.1.319 (Claude Code)",
+  "language": "Python",
+  "run_id": "20261107T161744Z-claude-files-python-1",
+  "turn_seconds": [
+    19.25,
+    249.61
+  ],
+  "worker_source_sha256": "27c7e69bd867cce55d989a658b90a2e93eb104f90a46e1cb3edd7d378e8e19c0",
+  "independent_sql_checks": 9,
+  "status": "passed",
+  "packaging_changes": "Worker, dependencies, lockfile, tests and verification manifest copied unchanged. Added portable demo runner, documentation, sample inputs, and relative paths in the displayed reply. No human worker-source corrections."
+}

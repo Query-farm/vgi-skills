@@ -3,7 +3,7 @@
 Stock DuckDB 2.0.0 can load VGI from Query Farm's signed extension repository. It is the default engine for new quickstart projects. Preserve an existing application's engine choice.
 
 ```sh
-uvx duckdb-cli==2.0.0
+uvx --from duckdb-cli==2.0.0 duckdb
 ```
 
 In DuckDB, configure the repository once on each machine or execution environment:

@@ -52,6 +52,6 @@ All six current published SDKs passed real SQL smoke checks against Haybarn 2.0.
 
 Run `python3 scripts/evaluate.py --agent codex --case python-build`, or use `--agent claude`. Use `--engine haybarn` to reproduce the original engine path; the current default is stock DuckDB. Build cases are available for python, typescript, go, rust, java, and csharp. Add `--without-skill` for the baseline. Run `python3 scripts/collect_results.py` to regenerate this report. Raw events and generated projects stay in the ignored .eval-runs directory; published summaries contain no account metadata or local paths.
 
-## Filmed integration build
+## Verified integration build
 
 A separate interactive Codex session built a Python GitHub releases table and joined its live API data to a sample local inventory. The CLI reported 7m 11s of work; the full screen capture includes setup and waiting (8m 11s). The generated project passed 16 tests and five SQL verifier assertions. Independent checking matched live SQL rows against a direct API response. The initial folder trust prompt was confirmed; no human source corrections were supplied. See [the recorded run metadata](github-integration.json) and [source and reproduction commands](../examples/agent-github-releases/README.md). This run is outside the automated harness table above.
