@@ -68,7 +68,7 @@ Run it locally through stock DuckDB and leave repeatable tests and the exact
 ATTACH and SELECT statements. Do not deploy it.
 ```
 
-Substitute any supported language. The [website quickstart](https://query.farm/vgi/build-with-an-agent/) prepares an editable prompt for your agent and language.
+Substitute any supported language. The [website quickstart](https://query.farm/vgi/build-with-an-agent/) has installation help and copyable requests for APIs, local data, and existing libraries. Name your language in the request, or let the agent ask before it writes code.
 
 ## Verification
 
