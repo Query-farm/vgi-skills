@@ -1,0 +1,618 @@
+{
+  "recorded_on": "2026-11-07",
+  "baseline_kits": [
+    {
+      "language": "python",
+      "source": "https://github.com/Query-farm/vgi-starter-python",
+      "commit": "aa4ee91a6789abc455298688fbe9774489ee3260",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_python"
+          ],
+          "exit_code": 0,
+          "seconds": 1.53
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 0,
+          "seconds": 31.88
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "vgi-python 0.49.1",
+      "stock_duckdb": {
+        "language": "python",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "language": "typescript",
+      "source": "https://github.com/Query-farm/vgi-starter-typescript",
+      "commit": "c0e40b63431a001deb78292f7b146a33d43e57b6",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_typescript"
+          ],
+          "exit_code": 0,
+          "seconds": 1.27
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 0,
+          "seconds": 18.82
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "@query-farm/vgi 0.48.1",
+      "stock_duckdb": {
+        "language": "typescript",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "language": "go",
+      "source": "https://github.com/Query-farm/vgi-starter-go",
+      "commit": "02c15e1fe795f28d0c3b3fd2de0b0ea6b04c99c2",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_go"
+          ],
+          "exit_code": 0,
+          "seconds": 0.3
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 0,
+          "seconds": 31.08
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "vgi-go 0.40.1",
+      "stock_duckdb": {
+        "language": "go",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "language": "rust",
+      "source": "https://github.com/Query-farm/vgi-starter-rust",
+      "commit": "ff1587c6d6f57b1f192f20c8c34f0e3e4732ba10",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_rust"
+          ],
+          "exit_code": 0,
+          "seconds": 1.21
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 0,
+          "seconds": 119.43
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "vgi 0.49.3",
+      "stock_duckdb": {
+        "language": "rust",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "language": "java",
+      "source": "https://github.com/Query-farm/vgi-starter-java",
+      "commit": "659b4d4b9bd27a24472bd78e1b21710e947af3a9",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_java"
+          ],
+          "exit_code": 0,
+          "seconds": 15.68
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 2,
+          "seconds": 0.89
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "farm.query:vgi 0.46.1",
+      "initial_status": "failed",
+      "environment_correction": "Initial make check selected JDK 21 and failed because the template targets release 25. Retried with installed JDK 27 selected by per-command JAVA_HOME/PATH, without changing template source or global Java settings.",
+      "retry": {
+        "command": [
+          "make",
+          "check"
+        ],
+        "jdk": "27",
+        "exit_code": 0
+      },
+      "stock_duckdb": {
+        "language": "java",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    {
+      "language": "csharp",
+      "source": "https://github.com/Query-farm/vgi-starter-csharp",
+      "commit": "206fcdc23d5759ce707d2e9f516633d44cee017d",
+      "steps": [
+        {
+          "command": [
+            "make",
+            "init",
+            "NAME=skills_csharp"
+          ],
+          "exit_code": 0,
+          "seconds": 7.0
+        },
+        {
+          "command": [
+            "make",
+            "check"
+          ],
+          "exit_code": 0,
+          "seconds": 45.38
+        }
+      ],
+      "status": "passed",
+      "resolved_sdk": "QueryFarm.Vgi 0.24.0",
+      "stock_duckdb": {
+        "language": "csharp",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "status": "passed"
+          },
+          {
+            "name": "scalar and NULL",
+            "status": "passed"
+          },
+          {
+            "name": "constant constraint",
+            "status": "passed"
+          },
+          {
+            "name": "named argument",
+            "status": "passed"
+          },
+          {
+            "name": "named constraint",
+            "status": "passed"
+          },
+          {
+            "name": "empty table",
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "status": "passed"
+          },
+          {
+            "name": "paginated fixture API",
+            "status": "passed"
+          }
+        ],
+        "status": "passed"
+      }
+    }
+  ],
+  "agent_builds": [
+    {
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "model": "claude-opus-5-5",
+      "language": "TypeScript",
+      "prompt": "Use the vgi-worker skill. Build a TypeScript VGI worker exposing badge.main.initials(name VARCHAR) -> VARCHAR. Return the uppercase first character of each whitespace-separated word. Empty or whitespace-only input returns an empty string; SQL NULL stays NULL. For example 'Ada Lovelace' returns 'AL' and '  grace   hopper  ' returns 'GH'. Build this locally, verify it through stock DuckDB 2.0.0 with VGI from query_farm, and leave repeatable tests and the exact ATTACH and query commands. Do not publish or deploy.",
+      "run_id": "20261107T170554Z-claude-a871b411",
+      "seconds": 215.41,
+      "starter_commit": "c0e40b63431a001deb78292f7b146a33d43e57b6",
+      "installed_skill_sha256": "395ffe40933cb35aaf3977cec7b177256cb13ad0f84c66eb7b352b6c11dec6d9",
+      "parent_instructions_unchanged": true,
+      "review": "Selected TypeScript starter without a repository hint in the task; initialized badge, preserved Bun and the SDK lock, and added metadata/unit/SQL checks. Independently rerun make check and stock DuckDB assertions passed. The added stock-DuckDB target references the installed skill verifier; the README documents a VERIFIER override for moving the worker. No standalone packaging claim.",
+      "verification": {
+        "language": "typescript",
+        "starter": "vgi-starter-typescript",
+        "template_version": "1.0.0",
+        "make_check_exit_code": 0,
+        "make_check_seconds": 14.62,
+        "engine": "2.0.0",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "sql": "SELECT count(*) FROM information_schema.schemata WHERE catalog_name='badge' AND schema_name='main'",
+            "rows": [
+              [
+                1
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "provided examples",
+            "sql": "SELECT badge.main.initials('Ada Lovelace'),badge.main.initials('  grace   hopper  ')",
+            "rows": [
+              [
+                "AL",
+                "GH"
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "unseen names and whitespace",
+            "sql": "SELECT badge.main.initials('katherine' || chr(9) || 'coleman' || chr(10) || 'johnson'),badge.main.initials('mIxEd')",
+            "rows": [
+              [
+                "KCJ",
+                "M"
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "sql": "SELECT badge.main.initials(''),badge.main.initials('   ')",
+            "rows": [
+              [
+                "",
+                ""
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "NULL propagation",
+            "sql": "SELECT badge.main.initials(NULL::VARCHAR)",
+            "rows": [
+              [
+                null
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "sql": "SELECT count(*) FROM range(10000) WHERE badge.main.initials('Ada Lovelace ' || range::VARCHAR) = 'AL' || left(range::VARCHAR,1)",
+            "rows": [
+              [
+                10000
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "result type",
+            "sql": "SELECT typeof(badge.main.initials('Ada Lovelace'))",
+            "rows": [
+              [
+                "VARCHAR"
+              ]
+            ],
+            "status": "passed"
+          }
+        ],
+        "extension": "b744d094ed",
+        "status": "passed"
+      },
+      "status": "passed"
+    },
+    {
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "model": "configured default; not reported",
+      "language": "Python",
+      "prompt": "Use the vgi-worker skill. Build a Python VGI worker exposing badge.main.initials(name VARCHAR) -> VARCHAR. Return the uppercase first character of each whitespace-separated word. Empty or whitespace-only input returns an empty string; SQL NULL stays NULL. For example 'Ada Lovelace' returns 'AL' and '  grace   hopper  ' returns 'GH'. Build this locally, verify it through stock DuckDB 2.0.0 with VGI from query_farm, and leave repeatable tests and the exact ATTACH and query commands. Do not publish or deploy.",
+      "run_id": "20261107T170554Z-codex-5d27b805",
+      "seconds": 422.04,
+      "starter_commit": "aa4ee91a6789abc455298688fbe9774489ee3260",
+      "installed_skill_sha256": "395ffe40933cb35aaf3977cec7b177256cb13ad0f84c66eb7b352b6c11dec6d9",
+      "parent_instructions_unchanged": true,
+      "review": "Selected Python starter without a repository hint in the task; initialized badge, preserved the SDK lock and initialized quality gates, added metadata, unit/SQL/agent-task coverage, and copied the SQL verifier into the project. Independently rerun make check and stock DuckDB assertions passed.",
+      "verification": {
+        "language": "python",
+        "starter": "vgi-starter-python",
+        "template_version": "1.0.0",
+        "make_check_exit_code": 0,
+        "make_check_seconds": 19.07,
+        "engine": "2.0.0",
+        "checks": [
+          {
+            "name": "catalog discovery",
+            "sql": "SELECT count(*) FROM information_schema.schemata WHERE catalog_name='badge' AND schema_name='main'",
+            "rows": [
+              [
+                1
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "provided examples",
+            "sql": "SELECT badge.main.initials('Ada Lovelace'),badge.main.initials('  grace   hopper  ')",
+            "rows": [
+              [
+                "AL",
+                "GH"
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "unseen names and whitespace",
+            "sql": "SELECT badge.main.initials('katherine' || chr(9) || 'coleman' || chr(10) || 'johnson'),badge.main.initials('mIxEd')",
+            "rows": [
+              [
+                "KCJ",
+                "M"
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "sql": "SELECT badge.main.initials(''),badge.main.initials('   ')",
+            "rows": [
+              [
+                "",
+                ""
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "NULL propagation",
+            "sql": "SELECT badge.main.initials(NULL::VARCHAR)",
+            "rows": [
+              [
+                null
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "multiple batches",
+            "sql": "SELECT count(*) FROM range(10000) WHERE badge.main.initials('Ada Lovelace ' || range::VARCHAR) = 'AL' || left(range::VARCHAR,1)",
+            "rows": [
+              [
+                10000
+              ]
+            ],
+            "status": "passed"
+          },
+          {
+            "name": "result type",
+            "sql": "SELECT typeof(badge.main.initials('Ada Lovelace'))",
+            "rows": [
+              [
+                "VARCHAR"
+              ]
+            ],
+            "status": "passed"
+          }
+        ],
+        "extension": "b744d094ed",
+        "status": "passed"
+      },
+      "status": "passed"
+    }
+  ],
+  "limitations": [
+    "macOS ARM64; shared package caches and installed toolchains",
+    "Six deterministic kit checks; only Python/Codex and TypeScript/Claude received new native-agent build evaluations",
+    "Earlier onboarding results predate starter integration",
+    "Runtime-constraint exception and Java prerequisite wording were clarified after the two agents installed the skill; their exercised starter workflow is unchanged",
+    "Private skills repository Linux CI remains blocked by GitHub account billing/spending limits"
+  ]
+}

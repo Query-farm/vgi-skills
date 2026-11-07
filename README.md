@@ -12,6 +12,8 @@ This repository is the portable source for three independently installable skill
 
 For a new project, the builder asks which language you want if you have not already chosen one. Existing projects keep their language and tooling.
 
+New workers start from the matching [Query Farm starter kit](skills/vgi-worker/references/starters.md), with its working examples, metadata, dependency locks, and `make check` suite. The skill adapts that project to your request and also verifies stock DuckDB when requested. It creates the worker locally; a GitHub repository or deployment is optional.
+
 ## Installation
 
 Use the portable [skills CLI](https://github.com/vercel-labs/skills) from your project directory:
@@ -98,6 +100,7 @@ Stock DuckDB 2.0.0 is the default tested engine, using `INSTALL vgi FROM query_f
 - [Stock DuckDB checks of generated workers](evals/stock-duckdb.json)
 - [Agent evaluation results](evals/RESULTS.md)
 - [Website onboarding evaluation](evals/onboarding/README.md) — exact copyable requests, language selection, resumed conversations, and independent SQL checks
+- [Starter-kit integration results](evals/STARTERS.md) — all six kit baselines plus fresh Codex/Python and Claude/TypeScript builds
 
 SDK compatibility checks and agent evaluations are different measurements. Do not generalize a single successful run into a universal five-minute guarantee.
 
