@@ -1,5 +1,7 @@
 # Website onboarding evaluation
 
+Read the [reviewed results](RESULTS.md) and [individual run evidence](results.json).
+
 This suite starts with the three short requests people can copy from the website. Each run uses a fresh project, installs `vgi-worker` with the skills CLI, and sends the request unchanged to Codex or Claude Code. The first turn does not specify a language or source. The second turn supplies the developer's choice and input data, through the **same agent session**.
 
 The matrix covers API integration, local photos, and an existing validation library in Python and TypeScript, with both agents: 12 conversations. Each agent sees each opening request twice, with a different language in the reply. These are not repeated trials under identical conditions, a model comparison, or a reliability estimate. Other languages have separate [earlier coverage](../RESULTS.md); other coding agents have installation coverage only.

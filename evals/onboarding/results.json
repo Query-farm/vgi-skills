@@ -1,0 +1,959 @@
+{
+  "recorded_on": "2026-11-07",
+  "passed": 12,
+  "total": 12,
+  "runs": [
+    {
+      "run_id": "20261107T161737Z-codex-files-python-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "files",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "28b7fba5191182d4c973d7a07d73dc1c9f8c103a0998e59cca3e727cd107808f",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        93.35,
+        573.92
+      ],
+      "first_response": "Which folder contains your photos, and which language should I use: Python, TypeScript, Go, Rust, Java, or C#?\n\nI\u2019ll keep the files unchanged and all metadata processing local.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Read the installed skill, asked for folder and language, then built Python. Source reads supplied JPEG metadata; final response includes ATTACH, grouping/GPS queries, repeatable tests, and actual results."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "metadata, dates, and signed GPS",
+            "status": "passed"
+          },
+          {
+            "name": "actual file sizes",
+            "status": "passed"
+          },
+          {
+            "name": "empty folder",
+            "status": "passed"
+          },
+          {
+            "name": "null folder",
+            "status": "passed"
+          },
+          {
+            "name": "repeat scans",
+            "status": "passed"
+          },
+          {
+            "name": "new input discovered without rebuilding",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T161744Z-claude-files-python-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "files",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "28b7fba5191182d4c973d7a07d73dc1c9f8c103a0998e59cca3e727cd107808f",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        19.25,
+        249.61
+      ],
+      "first_response": "Before I write any code I need two answers from you. I've checked that `uv`, Python, Node, Go, Rust, Java and .NET are all installed here, so any of the supported languages will work.\n\n**1. Which folder of photos should it read?** Please give the absolute path, e.g. `<home>/Pictures/...`. The worker will only read files there. It won't modify them, and nothing leaves your machine.\n\n**2. Which language should the worker be written in?** The options are Python, TypeScript, Go, Rust, Java or C#.\n\nHere's the SQL I plan to give you, so you can correct it now if it's not what you want:\n\n```sql\nATTACH 'photos' AS photos (TYPE vgi, LOCATION '<worker command>');\nSELECT * FROM photos.main.photo_metadata('/path/to/folder');\n```\n\nIt's a table function with one row per image file and these columns:\n- `path` (VARCHAR)\n- `file_name`, `extension`, `size_bytes`\n- `camera_make`, `camera_model` (VARCHAR, NULL if missing)\n- `taken_at` (TIMESTAMP from EXIF DateTimeOriginal, NULL if missing)\n- `latitude`, `longitude`, `altitude` (DOUBLE, NULL when there's no GPS data)\n\nDefaults I'll use unless you say otherwise:\n- **Subfolders:** included.\n- **File types:** JPEG, TIFF, HEIC and common RAW formats (DNG, CR2, NEF, ARW).\n- **Unreadable files:** a file with no readable EXIF still gets a row, with NULL metadata, rather than an error.\n\nDo you want any of these changed? Two other options:\n- **Fixed folder:** instead of passing the path into the function each time, you can have the worker always read one folder and appear as a table.\n- **Extra fields:** I can add more, such as lens, ISO, exposure or orientation.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for folder and language, then honored the JPEG/nonrecursive scope in the reply. Nine generated SQL assertions and the final CLI handoff were reviewed. This unchanged worker is preserved as the worked example."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "metadata, dates, and signed GPS",
+            "status": "passed"
+          },
+          {
+            "name": "actual file sizes",
+            "status": "passed"
+          },
+          {
+            "name": "empty folder",
+            "status": "passed"
+          },
+          {
+            "name": "null folder",
+            "status": "passed"
+          },
+          {
+            "name": "repeat scans",
+            "status": "passed"
+          },
+          {
+            "name": "new input discovered without rebuilding",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T162401Z-claude-api-python-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "api",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "6ff33257feff53df4f4a899a0b62cf3267dbd2f8ae19a57a551d6c71c5b91f91",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        20.62,
+        222.28
+      ],
+      "first_response": "I'll use the project's `vgi-worker` skill at `.claude/skills/vgi-worker/`. Before I write any code I need two answers from you. The project only has `CLAUDE.md` and `skills-lock.json` so far. On this machine I found uv, Python 3, DuckDB, Go, Cargo/Rust, Node, Java and .NET, so any of the supported languages will work.\n\n**1. Which language?** Python, TypeScript, Go, Rust, Java or C#.\n\n**2. Which API or data service?** Please tell me:\n- **The source:** a public REST API (for example GitHub, an open-data portal, or a weather API), a local service you're running, or a file or dataset you have. A URL or docs link helps.\n- **The records to expose as tables:** for example `users`, `orders`, or `stations`, and the fields you need.\n- **Authentication:** none, an API key from an environment variable, or something else. I won't create accounts or write anything to the service.\n- **The CSV to join against:** its path and the column that matches the API records. If you don't have one yet, I can make a small sample.\n\nIf you'd rather not decide, one option is a Python worker for a free public API with no key, such as an open-data catalog. I'd test it against local fixtures and run one live check separately. I'll only go ahead with that if you say so.\n\nOnce you answer, I'll:\n1. Pin the published SDK.\n2. Build the worker as a DuckDB catalog.\n3. Test it through DuckDB with fixtures, including a join to your CSV, using the skill's verifier.\n4. Give you the exact `ATTACH` and `SELECT` statements I tested.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for source, language, and join details. Reviewed Python worker and real SQL verification. Agent found and recovered from the incorrect DuckDB CLI command in engine.md; the skill reference was corrected afterward."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "all API pages",
+            "status": "passed"
+          },
+          {
+            "name": "join keeps customers with zero open tickets",
+            "status": "passed"
+          },
+          {
+            "name": "empty API",
+            "status": "passed"
+          },
+          {
+            "name": "null URL",
+            "status": "passed"
+          },
+          {
+            "name": "unseen API response",
+            "status": "passed"
+          },
+          {
+            "name": "multiple Arrow batches",
+            "status": "passed"
+          },
+          {
+            "name": "error is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "rate-limit is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "malformed is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "loop is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T162401Z-codex-api-python-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "api",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "6ff33257feff53df4f4a899a0b62cf3267dbd2f8ae19a57a551d6c71c5b91f91",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        71.93,
+        528.32
+      ],
+      "first_response": "Which API or data service should I connect, and which language should I use: **Python, TypeScript, Go, Rust, Java, or C#**?\n\nInclude the API base URL, local CSV path, and join key if you know them. I\u2019ll then build the worker, verify it through DuckDB, and provide tested `ATTACH` and join queries.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for API and language. Python worker queries the supplied paginated endpoint and joins the supplied CSV. Generated SQL/test commands and the final zero-count-preserving join were reviewed."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "all API pages",
+            "status": "passed"
+          },
+          {
+            "name": "join keeps customers with zero open tickets",
+            "status": "passed"
+          },
+          {
+            "name": "empty API",
+            "status": "passed"
+          },
+          {
+            "name": "null URL",
+            "status": "passed"
+          },
+          {
+            "name": "unseen API response",
+            "status": "passed"
+          },
+          {
+            "name": "multiple Arrow batches",
+            "status": "passed"
+          },
+          {
+            "name": "error is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "rate-limit is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "malformed is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "loop is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T162834Z-codex-library-python-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "library",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "956dbc6fe898a778bef747168cb70b56df770981f30bbe807196725456e74c2a",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        99.42,
+        285.26
+      ],
+      "first_response": "Please provide:\n\n- **Library:** package name or path within this project.\n- **Language:** Python, TypeScript, Go, Rust, Java, or C#.\n- **Examples:** valid and invalid inputs with expected results.\n- **CSV:** optional project-relative path and columns to validate.\n\nThen I\u2019ll build the worker, verify it in DuckDB, and provide tested `ATTACH` and CSV queries.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for language/library/input examples. Python source imports and calls inputs.company_rules.is_valid_sku; it preserves SQL NULL. Final handoff includes separate invalid and missing-value queries."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "library semantics",
+            "status": "passed"
+          },
+          {
+            "name": "null propagation",
+            "status": "passed"
+          },
+          {
+            "name": "invalid CSV records",
+            "status": "passed"
+          },
+          {
+            "name": "missing values stay separate",
+            "status": "passed"
+          },
+          {
+            "name": "multiple input batches",
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T163425Z-claude-library-python-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "library",
+      "language": "python",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "956dbc6fe898a778bef747168cb70b56df770981f30bbe807196725456e74c2a",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        18.71,
+        106.93
+      ],
+      "first_response": "I've read the vgi-worker skill. The project folder only has `CLAUDE.md`, `skills-lock.json`, and the skill itself, so your validation library isn't in here. Before I write any code I need a few answers:\n\n1. **Which validation library?** Give me a package name and version (e.g. `email-validator`, `phonenumbers`, `jsonschema`, `pydantic`, `zod`, `go-playground/validator`) or a local path to your own library. If it's your own code, tell me where it is, since I'm limited to this project directory unless you point me somewhere.\n2. **Which language should the worker use?** Python, TypeScript, Go, Rust, Java, or C#. This usually matches the library's language.\n3. **What gets validated?** For example, one string column like an email or phone number, several columns making up one record, or a JSON blob per row. Name any parameters too, like a schema file or a country code.\n4. **Valid and invalid examples:** a few inputs that should pass and a few that should fail. If you can, include the error message or reason you'd expect for the failures.\n5. **How should the SQL look?** My default is a scalar function, with names you can change:\n   - `validate(col)`, which returns `NULL` when the value is valid and an error message when it isn't. You'd use it like `SELECT * FROM read_csv('data.csv') WHERE myval.validate(email) IS NOT NULL`.\n   - Optionally `is_valid(col)`, which returns `BOOLEAN`.\n\n   Tell me if you'd rather have something else, such as a table function that returns one row per error.\n6. **The CSV:** do you have a local CSV you'd like me to query in the demo, and what are its columns? If not, I'll create a small test CSV from your examples.\n\nOnce I have these, I'll build the worker with a pinned SDK version and test it through a real DuckDB `ATTACH` using the skill's verifier. Then I'll give you the exact `ATTACH` and `SELECT` statements.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for language/library/input examples. Source imports the existing rule; no duplicated predicate. Agent repaired its own test-import configuration, reran tests, and gave verified ATTACH and CSV queries."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "library semantics",
+            "status": "passed"
+          },
+          {
+            "name": "null propagation",
+            "status": "passed"
+          },
+          {
+            "name": "invalid CSV records",
+            "status": "passed"
+          },
+          {
+            "name": "missing values stay separate",
+            "status": "passed"
+          },
+          {
+            "name": "multiple input batches",
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T163508Z-codex-api-typescript-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "api",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "6ff33257feff53df4f4a899a0b62cf3267dbd2f8ae19a57a551d6c71c5b91f91",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        94.3,
+        425.76
+      ],
+      "first_response": "Which API or data service should I connect, and which language should I use: **Python, TypeScript, Go, Rust, Java, or C#**?\n\nPlease include the source URL, any authentication requirements, and your CSV path and join key if available.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Read the installed skill and asked for source/language. TypeScript worker uses supplied HTTP data and CSV, compiles to Node, and returns the tested join preserving zero-ticket customers. Reviewed repeatable unit/SQL commands and ATTACH handoff."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "all API pages",
+            "status": "passed"
+          },
+          {
+            "name": "join keeps customers with zero open tickets",
+            "status": "passed"
+          },
+          {
+            "name": "empty API",
+            "status": "passed"
+          },
+          {
+            "name": "null URL",
+            "status": "passed"
+          },
+          {
+            "name": "unseen API response",
+            "status": "passed"
+          },
+          {
+            "name": "multiple Arrow batches",
+            "status": "passed"
+          },
+          {
+            "name": "error is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "rate-limit is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "malformed is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "loop is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T163636Z-claude-api-typescript-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "api",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "6ff33257feff53df4f4a899a0b62cf3267dbd2f8ae19a57a551d6c71c5b91f91",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        18.65,
+        216.02
+      ],
+      "first_response": "I've loaded the `vgi-worker` skill and checked your setup. The project is empty apart from config files, and there's no CSV in it yet. All six supported toolchains are installed: Python (uv), Node 26/Bun, Go, Rust, Java and .NET. DuckDB is installed too.\n\nBefore I write any code, I need two answers from you:\n\n**1. Which API or data service?** Please say:\n- **The source**: for example a public REST API, a local service you run (and its URL), or a JSON/NDJSON export.\n- **Which records to expose as tables**: for example `users`, `orders` or `repos`.\n- **The join key to your CSV**: which column links them, and the CSV's path. If you don't have a CSV yet, I can make a small test one.\n- **Authentication, if any**: how it works, such as an API key in an environment variable or none.\n\nIf you'd like a suggestion, I'd use a small local fixture service with test data for the repeatable tests. I can also run a separate check against the real API if you want.\n\n**2. Which language?** Python, TypeScript, Go, Rust, Java or C#.\n\nOnce you reply, I'll build the worker as a SQL catalog with the tables you name, test it locally against fixture data, and run it through DuckDB with the skill's verifier. Then I'll show you the exact `ATTACH` statement and a `SELECT \u2026 JOIN read_csv(...)` query that I've actually run.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Read the skill and asked for source/language before implementation. Generated TypeScript compiles to a Node worker, uses the supplied endpoint/CSV, and includes repeatable SQL error checks. Agent corrected its launch approach for use outside the project directory."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "all API pages",
+            "status": "passed"
+          },
+          {
+            "name": "join keeps customers with zero open tickets",
+            "status": "passed"
+          },
+          {
+            "name": "empty API",
+            "status": "passed"
+          },
+          {
+            "name": "null URL",
+            "status": "passed"
+          },
+          {
+            "name": "unseen API response",
+            "status": "passed"
+          },
+          {
+            "name": "multiple Arrow batches",
+            "status": "passed"
+          },
+          {
+            "name": "error is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "rate-limit is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "malformed is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "loop is not an empty success",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T164033Z-codex-files-typescript-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "files",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "28b7fba5191182d4c973d7a07d73dc1c9f8c103a0998e59cca3e727cd107808f",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        60.9,
+        563.64
+      ],
+      "first_response": "Which photo folder should I use (within this project), and which language: **TypeScript, Python, Go, Rust, Java, or C#**?\n\nI\u2019ll keep the files unchanged and metadata local, then build the worker and verify the `ATTACH` and queries in DuckDB.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for folder/language without writing implementation. TypeScript source reads supplied JPEG metadata. Reviewed 7 worker tests, 12 generated SQL checks, and the tested ATTACH/grouping/GPS handoff; independent checks also passed."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "metadata, dates, and signed GPS",
+            "status": "passed"
+          },
+          {
+            "name": "actual file sizes",
+            "status": "passed"
+          },
+          {
+            "name": "empty folder",
+            "status": "passed"
+          },
+          {
+            "name": "null folder",
+            "status": "passed"
+          },
+          {
+            "name": "repeat scans",
+            "status": "passed"
+          },
+          {
+            "name": "new input discovered without rebuilding",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T164351Z-claude-files-typescript-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "files",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "28b7fba5191182d4c973d7a07d73dc1c9f8c103a0998e59cca3e727cd107808f",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        19.38,
+        252.67
+      ],
+      "first_response": "I've read the vgi-worker skill and checked your machine. Node 26.10, Bun, npm, uv and DuckDB are all installed. exiftool isn't installed, so I'd read the metadata inside the worker with a library instead.\n\nBefore I write any code, I need two answers:\n\n1. **Folder:** which folder holds the photos? Give me an absolute path. Should I include subfolders?\n2. **Language:** which one do you want? The options are **Python, TypeScript, Go, Rust, Java, or C#**. TypeScript would use `@query-farm/vgi` 0.48.0, and your Node and Bun versions are new enough.\n\nHere's the SQL interface I have in mind. Tell me if you'd change anything:\n\n- **A table function:** `photos(root VARCHAR)` returns one row per image with these columns:\n  - `path`\n  - `file_name`\n  - `size_bytes`\n  - `camera_make`\n  - `camera_model`\n  - `taken_at` (a TIMESTAMP from EXIF DateTimeOriginal, falling back to the file's modified time)\n  - `latitude` and `longitude` (DOUBLE, NULL when there's no GPS data)\n- **File types:** JPEG, HEIC, TIFF and the common RAW formats. Files that can't be read come back with NULL metadata instead of failing the query.\n- **Read-only and local:** the worker only reads your files and never changes them. It runs as a local subprocess over stdio, so no network service is involved.\n\nOnce you answer, I'll build it and test it on sample photos I generate, not your real files. Then I'll run the skill's DuckDB verifier and show you the exact `ATTACH` and `SELECT` statements that passed.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for folder/language, then built TypeScript and honored the supplied JPEG-only, nonrecursive, NULL-metadata requirements. Reviewed source, generated checks, launcher, and final ATTACH/grouping/GPS handoff. Independent checks include a newly added photo."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "metadata, dates, and signed GPS",
+            "status": "passed"
+          },
+          {
+            "name": "actual file sizes",
+            "status": "passed"
+          },
+          {
+            "name": "empty folder",
+            "status": "passed"
+          },
+          {
+            "name": "null folder",
+            "status": "passed"
+          },
+          {
+            "name": "repeat scans",
+            "status": "passed"
+          },
+          {
+            "name": "new input discovered without rebuilding",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T164825Z-codex-library-typescript-1",
+      "agent": "codex",
+      "agent_version": "codex-cli 0.167.0",
+      "case": "library",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "configured default; not reported in captured events",
+      "opening_request_sha256": "956dbc6fe898a778bef747168cb70b56df770981f30bbe807196725456e74c2a",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        45.08,
+        345.88
+      ],
+      "first_response": "Which validation library should I wrap, and where is it located?\n\nWhich worker language: TypeScript, Python, Go, Rust, Java, or C#?\n\nPlease provide valid and invalid input examples with expected results, plus the local CSV path if available. I\u2019ll then build the worker and verify the `ATTACH` and CSV queries in DuckDB.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for library/language/examples. TypeScript source imports the supplied ESM library; inputs remain unchanged. Reviewed unit checks, real SQL checks, runnable CSV reports, and ATTACH handoff. Scope note: the agent reported that an initial CLI probe may have registered query_farm in DuckDB\u2019s default local repository directory; its final runner uses project-local storage. The harness is not a filesystem sandbox."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "library semantics",
+            "status": "passed"
+          },
+          {
+            "name": "null propagation",
+            "status": "passed"
+          },
+          {
+            "name": "invalid CSV records",
+            "status": "passed"
+          },
+          {
+            "name": "missing values stay separate",
+            "status": "passed"
+          },
+          {
+            "name": "multiple input batches",
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    },
+    {
+      "run_id": "20261107T165059Z-claude-library-typescript-1",
+      "agent": "claude",
+      "agent_version": "2.1.319 (Claude Code)",
+      "case": "library",
+      "language": "typescript",
+      "attempt": "1",
+      "status": "passed",
+      "model": "claude-opus-5-5",
+      "opening_request_sha256": "956dbc6fe898a778bef747168cb70b56df770981f30bbe807196725456e74c2a",
+      "skill_entrypoint_sha256": "d9fcadb467f86de27abcdcf8c78c43f6156e207c8f5e6709e6f7990b6919cd02",
+      "turn_seconds": [
+        16.13,
+        88.2
+      ],
+      "first_response": "I've read the vgi-worker skill. This project is empty except for the skill, so I need a few answers from you before I write any code:\n\n1. **Which validation library?** Give me the package name and version if it's published (for example `zod@3.x`, `ajv`, `validator.js`, `pydantic`, `jsonschema`), or a path or repo if it's your own internal library. If you have a schema or rule file it should apply, point me to it too.\n\n2. **Which language should the worker use?** The options are **Python, TypeScript, Go, Rust, Java, or C#**. Usually this should match the library's language.\n\n3. **What does a record look like, and what makes one invalid?** Please paste:\n   - a few **valid** example records (CSV rows or JSON objects)\n   - a few **invalid** examples, with the error you expect for each (for example \"email: invalid format\", \"age: must be \u2265 0\")\n   - the column names and types of the CSV you want to check, or a sample CSV path\n\n4. **What should the SQL look like?** My default plan is a scalar function that returns `NULL` for a valid row and an error message for an invalid one, so you can run:\n   ```sql\n   SELECT *, v.validate_record(...) AS err FROM read_csv('people.csv') WHERE err IS NOT NULL;\n   ```\n   I could instead build a table function that returns `(row_id, field, message)` with one row per error. Tell me which you'd like, or I'll go with the scalar version.\n\nOnce you answer, I'll build the worker, test it through DuckDB with your valid and invalid examples, and show you the `ATTACH` and query against a local CSV.",
+      "no_files_written_before_language_choice": true,
+      "language_label_in_run_directory": true,
+      "review": {
+        "criteria": {
+          "skill_read": true,
+          "asked_language_and_source": true,
+          "used_chosen_language": true,
+          "used_supplied_source": true,
+          "ran_sql_checks": true,
+          "usable_sql_handoff": true
+        },
+        "notes": "Asked for library/language/examples before writing. TypeScript wrapper imports and calls the unchanged ESM library, preserving SQL NULL. Reviewed unit/type/SQL checks and the primary handoff explicitly run from the project directory. Independent checks passed."
+      },
+      "independent_verification": {
+        "status": "passed",
+        "engine": "2.0.0",
+        "extension": "b744d094ed",
+        "checks": [
+          {
+            "name": "attached catalog schema",
+            "status": "passed"
+          },
+          {
+            "name": "function is discoverable",
+            "status": "passed"
+          },
+          {
+            "name": "library semantics",
+            "status": "passed"
+          },
+          {
+            "name": "null propagation",
+            "status": "passed"
+          },
+          {
+            "name": "invalid CSV records",
+            "status": "passed"
+          },
+          {
+            "name": "missing values stay separate",
+            "status": "passed"
+          },
+          {
+            "name": "multiple input batches",
+            "status": "passed"
+          },
+          {
+            "name": "empty input",
+            "status": "passed"
+          },
+          {
+            "name": "input files unchanged",
+            "status": "passed"
+          }
+        ],
+        "error": ""
+      }
+    }
+  ]
+}

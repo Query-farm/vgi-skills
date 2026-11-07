@@ -16,6 +16,7 @@ import re
 import signal
 import subprocess
 import time
+import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUESTS = {x['id']: x['prompt'] for x in json.loads((ROOT/'evals/onboarding/requests.json').read_text())}
@@ -80,7 +81,7 @@ def main():
     start=subs.add_parser('start')
     start.add_argument('--agent',choices=['codex','claude'],required=True)
     start.add_argument('--case',choices=list(REQUESTS),required=True)
-    start.add_argument('--language',choices=['python','typescript'],required=True,help='Evaluation answer, not exposed in the first turn')
+    start.add_argument('--language',choices=['python','typescript'],required=True,help='Developer choice supplied in the second turn, absent from the opening request')
     start.add_argument('--attempt',default='1')
     start.add_argument('--website-source',type=Path,required=True)
     start.add_argument('--timeout',type=int,default=180)
@@ -93,7 +94,8 @@ def main():
         prompt=REQUESTS[args.case]
         if prompt not in args.website_source.read_text():raise SystemExit('Website prompt drift: update reviewed requests.json first')
         stamp=dt.datetime.now(dt.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-        run=ROOT/'.eval-runs'/'onboarding'/f'{stamp}-{args.agent}-{args.case}-{args.language}-{args.attempt}'
+        # Keep the future language answer out of the visible project path.
+        run=ROOT/'.eval-runs'/'onboarding'/f'{stamp}-{args.agent}-{args.case}-{uuid.uuid4().hex[:8]}'
         project=run/'project';project.mkdir(parents=True)
         subprocess.run(['git','init','-q',str(project)],check=True)
         with (run/'install.txt').open('w') as log:

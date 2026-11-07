@@ -1,0 +1,134 @@
+{
+  "20261107T161737Z-codex-files-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Read the installed skill, asked for folder and language, then built Python. Source reads supplied JPEG metadata; final response includes ATTACH, grouping/GPS queries, repeatable tests, and actual results."
+  },
+  "20261107T161744Z-claude-files-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for folder and language, then honored the JPEG/nonrecursive scope in the reply. Nine generated SQL assertions and the final CLI handoff were reviewed. This unchanged worker is preserved as the worked example."
+  },
+  "20261107T162401Z-codex-api-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for API and language. Python worker queries the supplied paginated endpoint and joins the supplied CSV. Generated SQL/test commands and the final zero-count-preserving join were reviewed."
+  },
+  "20261107T162401Z-claude-api-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for source, language, and join details. Reviewed Python worker and real SQL verification. Agent found and recovered from the incorrect DuckDB CLI command in engine.md; the skill reference was corrected afterward."
+  },
+  "20261107T162834Z-codex-library-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for language/library/input examples. Python source imports and calls inputs.company_rules.is_valid_sku; it preserves SQL NULL. Final handoff includes separate invalid and missing-value queries."
+  },
+  "20261107T163425Z-claude-library-python-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for language/library/input examples. Source imports the existing rule; no duplicated predicate. Agent repaired its own test-import configuration, reran tests, and gave verified ATTACH and CSV queries."
+  },
+  "20261107T163636Z-claude-api-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Read the skill and asked for source/language before implementation. Generated TypeScript compiles to a Node worker, uses the supplied endpoint/CSV, and includes repeatable SQL error checks. Agent corrected its launch approach for use outside the project directory."
+  },
+  "20261107T163508Z-codex-api-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Read the installed skill and asked for source/language. TypeScript worker uses supplied HTTP data and CSV, compiles to Node, and returns the tested join preserving zero-ticket customers. Reviewed repeatable unit/SQL commands and ATTACH handoff."
+  },
+  "20261107T164351Z-claude-files-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for folder/language, then built TypeScript and honored the supplied JPEG-only, nonrecursive, NULL-metadata requirements. Reviewed source, generated checks, launcher, and final ATTACH/grouping/GPS handoff. Independent checks include a newly added photo."
+  },
+  "20261107T164033Z-codex-files-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for folder/language without writing implementation. TypeScript source reads supplied JPEG metadata. Reviewed 7 worker tests, 12 generated SQL checks, and the tested ATTACH/grouping/GPS handoff; independent checks also passed."
+  },
+  "20261107T165059Z-claude-library-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for library/language/examples before writing. TypeScript wrapper imports and calls the unchanged ESM library, preserving SQL NULL. Reviewed unit/type/SQL checks and the primary handoff explicitly run from the project directory. Independent checks passed."
+  },
+  "20261107T164825Z-codex-library-typescript-1": {
+    "criteria": {
+      "skill_read": true,
+      "asked_language_and_source": true,
+      "used_chosen_language": true,
+      "used_supplied_source": true,
+      "ran_sql_checks": true,
+      "usable_sql_handoff": true
+    },
+    "notes": "Asked for library/language/examples. TypeScript source imports the supplied ESM library; inputs remain unchanged. Reviewed unit checks, real SQL checks, runnable CSV reports, and ATTACH handoff. Scope note: the agent reported that an initial CLI probe may have registered query_farm in DuckDB\u2019s default local repository directory; its final runner uses project-local storage. The harness is not a filesystem sandbox."
+  }
+}
