@@ -23,6 +23,25 @@ The verification manifest is a portable contract used by the bundled `scripts/ve
 }
 ```
 
+### ATTACH options and credentials
+
+A worker that declares ATTACH options (an API token, an endpoint URL) gets them from an optional `attach_options` object. A value is either a literal (string, number or boolean) or `{"env": "VARIABLE"}`, read from the environment when the verifier runs:
+
+```json
+{
+  "schema_version": 1,
+  "catalog": "slack",
+  "worker": ["bin/vgi-slack-worker"],
+  "attach_options": {
+    "token": {"env": "SLACK_TEST_TOKEN"},
+    "api_url": "http://127.0.0.1:8765"
+  },
+  "checks": [{"sql": "SELECT team FROM slack.main.auth_info()", "rows": [["Mock Team"]]}]
+}
+```
+
+Put every credential behind `env`, never in the manifest. Environment values are treated as secrets: the report's `attach_sql` shows `<redacted>`, and the value is scrubbed from every error, row and stderr line the verifier prints. A missing variable fails before the engine starts and names the variable. `TYPE` and `LOCATION` are set by the verifier and cannot be overridden. The verifier does not start helper processes: start a mock API yourself on a fixed port before running it.
+
 `columns` is optional; omit unstable engine-generated expression labels. Every check requires expected `rows`. Use `ORDER BY` when row order matters. Use explicit casts for SQL types and compare representative values, not just row counts. JSON numbers, strings, booleans, arrays, and nulls are supported; dates/timestamps/decimals are normalized to strings.
 
 Run with a pinned released engine:

@@ -39,7 +39,70 @@ def read_manifest(project: Path) -> dict:
             raise ValueError("every check needs expected rows as an array of arrays")
         if "columns" in check and (not isinstance(check["columns"], list) or not all(isinstance(v, str) for v in check["columns"])):
             raise ValueError("columns must be an array of names")
+    options = spec.get("attach_options", {})
+    if not isinstance(options, dict):
+        raise ValueError("attach_options must be an object of option name to value")
+    for name, value in options.items():
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name):
+            raise ValueError(f"attach option name {name!r} must be a SQL identifier")
+        if name.lower() in ("type", "location"):
+            raise ValueError(f"attach option {name!r} is set by the verifier")
+        if isinstance(value, dict):
+            if set(value) != {"env"} or not isinstance(value["env"], str) or not value["env"]:
+                raise ValueError(f"attach option {name!r}: use a literal or {{\"env\": \"VARIABLE\"}}")
+        elif value is not None and not isinstance(value, (str, int, float, bool)):
+            raise ValueError(f"attach option {name!r} must be a string, number, boolean or {{\"env\": ...}}")
+        elif value is None:
+            raise ValueError(f"attach option {name!r} must not be null; omit it instead")
     return spec
+
+
+REDACTED = "<redacted>"
+
+
+def attach_options(spec: dict, environ=os.environ) -> tuple[list[tuple[str, str, str]], list[str]]:
+    """Render ATTACH options as (name, sql_literal, display_literal), plus the secret values.
+
+    A value given as {"env": "VAR"} is read from the environment and treated as a
+    credential: it never appears in the report. Literals are shown as written.
+    """
+    rendered, secrets = [], []
+    for name, value in spec.get("attach_options", {}).items():
+        if isinstance(value, dict):
+            variable = value["env"]
+            if variable not in environ or environ[variable] == "":
+                raise ValueError(f"attach option {name!r} needs environment variable {variable} to be set")
+            secret = environ[variable]
+            secrets.append(secret)
+            rendered.append((name, sql_string(secret), REDACTED))
+        else:
+            if isinstance(value, bool):
+                literal = "true" if value else "false"
+            elif isinstance(value, (int, float)):
+                literal = repr(value)
+            else:
+                literal = sql_string(value)
+            rendered.append((name, literal, literal))
+    return rendered, secrets
+
+
+def attach_sql(catalog: str, command: str, options: list[tuple[str, str, str]], display: bool = False) -> str:
+    parts = ["TYPE vgi", f"LOCATION {sql_string(command)}"]
+    parts += [f"{name} {shown if display else literal}" for name, literal, shown in options]
+    return f"ATTACH {sql_string(catalog)} AS \"{catalog}\" ({', '.join(parts)});"
+
+
+def scrub(value, secrets: list[str]):
+    """Replace every secret value in a JSON-ready structure, e.g. if an error echoes it."""
+    if isinstance(value, str):
+        for secret in secrets:
+            value = value.replace(secret, REDACTED)
+        return value
+    if isinstance(value, list):
+        return [scrub(item, secrets) for item in value]
+    if isinstance(value, dict):
+        return {key: scrub(item, secrets) for key, item in value.items()}
+    return value
 
 
 def normalized(value):
@@ -65,8 +128,17 @@ def run_engine(project: Path, engine: str) -> dict:
     os.chdir(project)
     command = shlex.join(spec["worker"]) if os.name != "nt" else subprocess.list2cmdline(spec["worker"])
     catalog = spec["catalog"]
-    attach = f"ATTACH {sql_string(catalog)} AS \"{catalog}\" (TYPE vgi, LOCATION {sql_string(command)});"
-    result = {"status": "failed", "engine": engine, "engine_version": module.__version__, "worker": spec["worker"], "attach_sql": attach, "checks": []}
+    options, secrets = attach_options(spec)
+    attach = attach_sql(catalog, command, options)
+    result = {"status": "failed", "engine": engine, "engine_version": module.__version__, "worker": spec["worker"],
+              "attach_sql": attach_sql(catalog, command, options, display=True), "checks": []}
+    try:
+        return scrub(_run_checks(module, engine, spec, catalog, attach, result), secrets)
+    except Exception as exc:
+        raise RuntimeError(scrub(f"{type(exc).__name__}: {exc}", secrets)) from None
+
+
+def _run_checks(module, engine: str, spec: dict, catalog: str, attach: str, result: dict) -> dict:
     # Isolate repository registration from the developer's own engine settings.
     repository_dir = tempfile.TemporaryDirectory(prefix="vgi-verifier-repositories-")
     config = {"extension_repository_directory": repository_dir.name} if engine == "duckdb" else {}
@@ -117,11 +189,13 @@ def main() -> int:
     parser.add_argument("--_run", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     start = time.monotonic()
+    secrets: list[str] = []
     try:
         if args.timeout <= 0:
             raise ValueError("timeout must be positive")
         project = args.project.resolve()
-        read_manifest(project)
+        spec = read_manifest(project)
+        _, secrets = attach_options(spec)  # fail fast, in the parent, on a missing environment variable
         if args._run:
             result = run_engine(project, args.engine)
         else:
@@ -133,7 +207,7 @@ def main() -> int:
             try:
                 stdout, stderr = process.communicate(timeout=args.timeout)
                 if stderr:
-                    print(stderr, file=sys.stderr, end="")
+                    print(scrub(stderr, secrets), file=sys.stderr, end="")
                 try:
                     result = json.loads(stdout)
                 except json.JSONDecodeError:
@@ -149,6 +223,7 @@ def main() -> int:
                 result = {"status": "failed", "error": "Verification timed out", "timeout_seconds": args.timeout}
     except Exception as exc:
         result = {"status": "failed", "error": str(exc), "error_type": type(exc).__name__}
+    result = scrub(result, secrets)
     result["elapsed_seconds"] = round(time.monotonic() - start, 3)
     encoded = json.dumps(result, indent=2, allow_nan=False) + "\n"
     if args.output:
