@@ -133,12 +133,14 @@ def run_engine(project: Path, engine: str) -> dict:
     result = {"status": "failed", "engine": engine, "engine_version": module.__version__, "worker": spec["worker"],
               "attach_sql": attach_sql(catalog, command, options, display=True), "checks": []}
     try:
-        return scrub(_run_checks(module, engine, spec, catalog, attach, result), secrets)
+        return scrub(_run_checks(module, engine, project, spec, catalog, attach, result), secrets)
     except Exception as exc:
         raise RuntimeError(scrub(f"{type(exc).__name__}: {exc}", secrets)) from None
 
 
-def _run_checks(module, engine: str, spec: dict, catalog: str, attach: str, result: dict) -> dict:
+def _run_checks(module, engine: str, project: Path, spec: dict, catalog: str, attach: str, result: dict) -> dict:
+    # `project` stays in scope here: wrappers such as examples/agent-github-releases/verify.py
+    # patch the connection-config line below and refer to it.
     # Isolate repository registration from the developer's own engine settings.
     repository_dir = tempfile.TemporaryDirectory(prefix="vgi-verifier-repositories-")
     config = {"extension_repository_directory": repository_dir.name} if engine == "duckdb" else {}
